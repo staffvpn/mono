@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>tasko — сервис задач: опишите, что нужно, исполнитель найдётся</title>
+<meta name="description" content="tasko — сервис, где люди размещают задачи, а проверенные исполнители их выполняют. Собрать шкаф, починить стиралку, сделать Telegram-бота, отвезти документы.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="tasko — любая задача найдёт исполнителя">
+<meta property="og:description" content="Опишите задачу — получите отклики за 15 минут. Безопасная сделка, проверенные исполнители, оплата после проверки.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23DFF24A'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' stroke='%2317181A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">К содержимому</a>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="top">
+  <div class="header__inner">
+    <nav class="nav nav--left" aria-label="Основная навигация">
+      <a class="chip" href="#about">О сервисе</a>
+      <a class="chip" href="#services">Услуги</a>
+      <a class="chip" href="#reviews">Отзывы</a>
+    </nav>
+
+    <a class="logo" href="#top" aria-label="tasko — на главную">
+      <span class="logo__pill">tasko</span>
+    </a>
+
+    <div class="nav nav--right">
+      <div class="socials">
+        <a class="soc" href="#contacts" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.3 2.9 11.4c-.9.3-.9 1.5.1 1.8l4.7 1.4 1.8 5.4c.3.8 1.3.9 1.8.3l2.5-2.7 4.7 3.5c.7.5 1.6.1 1.8-.7l3-14.6c.2-.9-.7-1.6-1.8-1.5z"/></svg>
+        </a>
+        <a class="soc" href="#contacts" aria-label="ВКонтакте">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.8 16.6c-5 0-8-3.5-8.2-9.3h2.5c.1 4.3 2 6.1 3.5 6.5V7.3h2.4v3.6c1.5-.2 3-1.8 3.6-3.6h2.4c-.4 2.2-2 3.8-3.1 4.5 1.1.6 2.9 2 3.6 4.8h-2.6c-.5-1.7-1.9-3-3.9-3.2v3.2z"/></svg>
+        </a>
+        <a class="soc" href="#contacts" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.3a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4zm0 6.1a2.4 2.4 0 1 1 0-4.8 2.4 2.4 0 0 1 0 4.8zM16.9 8a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0zM16 4.6H8A3.4 3.4 0 0 0 4.6 8v8A3.4 3.4 0 0 0 8 19.4h8a3.4 3.4 0 0 0 3.4-3.4V8A3.4 3.4 0 0 0 16 4.6zm2.1 11.4c0 1.2-1 2.1-2.1 2.1H8c-1.2 0-2.1-1-2.1-2.1V8c0-1.2 1-2.1 2.1-2.1h8c1.2 0 2.1 1 2.1 2.1v8z"/></svg>
+        </a>
+      </div>
+      <a class="btn btn--ghost header__cta" href="#contacts">Связаться</a>
+      <button class="burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mobilemenu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobilemenu" id="mobilemenu" hidden>
+    <a href="#about">О сервисе</a>
+    <a href="#services">Услуги</a>
+    <a href="#tasks">Задачи</a>
+    <a href="#pricing">Тарифы</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#faq">Вопросы</a>
+    <a href="#contacts">Контакты</a>
+    <a class="btn btn--dark mobilemenu__cta" href="#hero-form">Разместить задачу</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero container">
+  <div class="hero__left reveal">
+    <a class="eyebrow" href="#tasks">Выберите задачу <span class="arrow-circle" aria-hidden="true">↗</span></a>
+
+    <h1 class="hero__title">
+      Любая задача<br>
+      найдёт <span class="u">исполнителя</span><br>
+      tasko. Делайте проще.
+    </h1>
+
+    <form class="subscribe" id="hero-form" novalidate>
+      <label class="sr-only" for="heroTask">Опишите задачу</label>
+      <input id="heroTask" name="task" type="text" placeholder="Что нужно сделать?" autocomplete="off" required>
+      <button class="btn btn--dark" type="submit">Найти <span aria-hidden="true">→</span></button>
+      <p class="form__msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="proof">
+      <div class="avatars" aria-hidden="true">
+        <span class="ava ava--1" style="--img:url('assets/avatar-1.jpg')"></span>
+        <span class="ava ava--2" style="--img:url('assets/avatar-2.jpg')"></span>
+        <span class="ava ava--3" style="--img:url('assets/avatar-3.jpg')"></span>
+      </div>
+      <p>12 000+ выполненных задач<br>и довольных заказчиков</p>
+    </div>
+  </div>
+
+  <div class="hero__right reveal">
+    <div class="hero__media" style="--img:url('assets/hero.jpg')">
+      <div class="mini-card">
+        <div class="mini-card__top">
+          <span class="tag tag--dark">Новая задача</span>
+          <span class="tag tag--dark">СЕГОДНЯ <b>10:24</b></span>
+        </div>
+        <h3>Собрать шкаф</h3>
+        <p>Шкаф-купе 2,4 м, инструкция есть. Нужен мастер с инструментом на вечер.</p>
+        <div class="mini-card__img" style="--img:url('assets/task-thumb.jpg')"></div>
+        <span class="mini-card__loc">◎ Москва, Хамовники</span>
+      </div>
+
+      <a class="float float--join" href="#hero-form">Взять задачу <span class="arrow-circle arrow-circle--lime" aria-hidden="true">↗</span></a>
+      <span class="float float--a"><i aria-hidden="true"></i>Проверенные исполнители</span>
+      <span class="float float--b"><i aria-hidden="true"></i>Отклики за 15 минут</span>
+      <span class="float float--c"><i aria-hidden="true"></i>Оплата после проверки</span>
+      <a class="float float--cta" href="#hero-form">Разместить задачу <span class="arrow-circle arrow-circle--lime" aria-hidden="true">↗</span></a>
+    </div>
+    <p class="hero__note">Отклики, договорённости, безопасная оплата — всё внутри сервиса. Вы просто принимаете работу.</p>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement container reveal" id="about">
+  <h2>Одни собирают вещи. Мы собираем решённые задачи, <mark>свободное время</mark> и спокойствие</h2>
+  <p class="statement__sub">
+    Вы думали об этом неделями. Может, месяцами.<br>
+    Это знак. Поручите задачу и забудьте о ней.
+  </p>
+  <div class="statement__actions">
+    <a class="btn btn--ghost" href="#tasks">Актуальные задачи <span aria-hidden="true">→</span></a>
+    <a class="link" href="#contacts">Контакты</a>
+  </div>
+</section>
+
+<!-- ============ BENTO ============ -->
+<section class="bento container" id="services">
+  <article class="bento__card bento__card--sage reveal">
+    <div class="bento__head">
+      <h3>Что входит<br>в каждый заказ</h3>
+      <span class="arrow-circle arrow-circle--outline" aria-hidden="true">↓</span>
+    </div>
+    <ul class="orbit">
+      <li>Безопасная сделка</li>
+      <li>Проверка паспорта</li>
+      <li>Гарантия на работы</li>
+      <li>Поддержка 24/7</li>
+      <li>Честные отзывы</li>
+      <li>Фиксированная цена</li>
+      <li>Чек и договор</li>
+      <li>Страхование</li>
+    </ul>
+  </article>
+
+  <div class="bento__stack reveal">
+    <article class="bento__mini">
+      <span class="mini-label">Только свои</span>
+      <p>Исполнители, которых не найти в поиске — приходят по рекомендациям</p>
+    </article>
+    <article class="bento__mini">
+      <span class="mini-label">Безопасность</span>
+      <p>Паспорт, рейтинг и реальные отзывы у каждого исполнителя</p>
+    </article>
+  </div>
+
+  <article class="bento__card bento__card--lime reveal">
+    <span class="wordmark">tasko</span>
+    <p>В tasko мы соединяем людей с задачами и тех, кто умеет их решать — от гвоздя в стене до Telegram-бота. С 2018 года</p>
+  </article>
+
+  <article class="bento__card bento__card--person reveal" style="--img:url('assets/master.jpg')">
+    <div class="person__top">
+      <span class="arrow-circle arrow-circle--white" aria-hidden="true">‹</span>
+      <span class="arrow-circle arrow-circle--white" aria-hidden="true">›</span>
+    </div>
+    <span class="person__badge">4,98 ★</span>
+    <div class="person__info">
+      <b>Альберт Флорес</b>
+      <span>◎ Москва, мастер на час</span>
+    </div>
+  </article>
+
+  <article class="bento__card bento__card--words reveal">
+    <span>Скорость</span>
+    <span>Надёжность</span>
+    <span>Цена</span>
+    <span class="em">Доверие</span>
+    <span>Гарантия</span>
+    <span>Результат</span>
+    <a class="words__cta" href="#tasks">Выбрать задачу <span class="arrow-circle" aria-hidden="true">↗</span></a>
+  </article>
+</section>
+
+<!-- ============ TASKS TABLE ============ -->
+<section class="tasks container" id="tasks">
+  <div class="tasks__head reveal">
+    <h2>Актуальные задачи 2026</h2>
+    <p>От гвоздя в стене до сложной разработки — ваша задача уже ждёт исполнителя</p>
+  </div>
+
+  <div class="table reveal">
+    <div class="table__head" aria-hidden="true">
+      <span>Задача</span>
+      <span>Формат</span>
+      <span>Срок</span>
+      <span></span>
+    </div>
+
+    <a class="row" href="#hero-form">
+      <span class="row__title">Собрать шкаф</span>
+      <span class="row__tags"><i class="tag">выезд мастера</i></span>
+      <span class="row__date">12.02.26</span>
+      <span class="row__arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a class="row" href="#hero-form">
+      <span class="row__title">Telegram-бот для записи</span>
+      <span class="row__tags"><i class="tag tag--lime">удалённо, 4 отклика</i></span>
+      <span class="row__date">23.02.26</span>
+      <span class="row__arrow" aria-hidden="true">→</span>
+      <span class="row__peek" style="--img:url('assets/peek.jpg')" aria-hidden="true"></span>
+    </a>
+
+    <a class="row" href="#hero-form">
+      <span class="row__title">Починить стиральную машину</span>
+      <span class="row__tags"><i class="tag">срочно</i><i class="tag">на дому</i></span>
+      <span class="row__date">09.03.26</span>
+      <span class="row__arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a class="row" href="#hero-form">
+      <span class="row__title">Отвезти документы</span>
+      <span class="row__tags"><i class="tag">курьер</i></span>
+      <span class="row__date">18.03.26</span>
+      <span class="row__arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <div class="cards reveal">
+    <a class="card card--accent" href="#hero-form" style="--img:url('assets/cat-1.jpg')">
+      <span class="card__arrow" aria-hidden="true">↗</span>
+      <div class="card__body">
+        <h3>Ремонт и быт</h3>
+        <p>Мастер на час, сантехника, электрика, мебель и техника</p>
+        <span class="card__more">Подробнее <b aria-hidden="true">›</b></span>
+      </div>
+    </a>
+
+    <a class="card" href="#hero-form" style="--img:url('assets/cat-2.jpg')">
+      <span class="card__arrow" aria-hidden="true">↗</span>
+      <div class="card__body">
+        <h3>Курьерские задачи</h3>
+        <p>Отвезти документы, забрать заказ, купить и доставить</p>
+        <span class="card__more">Подробнее <b aria-hidden="true">›</b></span>
+      </div>
+    </a>
+
+    <a class="card" href="#hero-form" style="--img:url('assets/cat-3.jpg')">
+      <span class="card__arrow" aria-hidden="true">↗</span>
+      <div class="card__body">
+        <h3>IT и разработка</h3>
+        <p>Боты, сайты, автоматизация, дизайн и настройка сервисов</p>
+        <span class="card__more">Подробнее <b aria-hidden="true">›</b></span>
+      </div>
+    </a>
+
+    <a class="card" href="#hero-form" style="--img:url('assets/cat-4.jpg')">
+      <span class="card__arrow" aria-hidden="true">↗</span>
+      <div class="card__body">
+        <h3>Уборка и клининг</h3>
+        <p>Генеральная уборка, после ремонта, окна и химчистка</p>
+        <span class="card__more">Подробнее <b aria-hidden="true">›</b></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ STATEMENT 2 ============ -->
+<section class="statement2 container reveal">
+  <h2>Клиенты помнят не цену, а ощущение — спокойно, честно, без нервов. Каждая деталь для вас. Потому что <mark>ваша задача важна</mark> нам</h2>
+  <div class="statement2__side">
+    <p>Мы создаём результат. Каждый заказчик уходит с чувством, что о нём позаботились</p>
+    <div class="statement2__actions">
+      <a class="btn btn--ghost" href="#tasks">Актуальные задачи <span aria-hidden="true">→</span></a>
+      <a class="link" href="#contacts">Контакты</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="reviews">
+  <div class="reviews__top">
+    <div class="reviews__label"><span>Отзывы</span></div>
+    <div class="reviews__title">
+      <h2>Довольные заказчики — причина, по которой мы работаем</h2>
+      <span class="arrow-circle arrow-circle--lime big" aria-hidden="true">→</span>
+    </div>
+  </div>
+
+  <div class="reviews__body">
+    <div class="stat">
+      <div class="stat__num"><b>70%</b><span>клиентов</span></div>
+      <div class="chart" aria-hidden="true"></div>
+      <p>70% наших заказчиков возвращаются со следующей задачей. Некоторые с нами уже пять, шесть, семь лет. Это давно не просто клиенты — это часть tasko</p>
+    </div>
+
+    <div class="reviews__grid">
+      <blockquote class="review">
+        <span class="review__author">— Тимур, Москва</span>
+        <div class="review__row">
+          <span class="ava" style="--img:url('assets/rev-1.jpg')" aria-hidden="true"></span>
+          <p>Заказывал сборку кухни. Мастер приехал со своим инструментом, всё собрал за вечер, мусор увёз. Цену назвали сразу и она не изменилась — это дорогого стоит</p>
+        </div>
+      </blockquote>
+
+      <blockquote class="review">
+        <span class="review__author">— Марк, Казань</span>
+        <div class="review__row">
+          <span class="ava" style="--img:url('assets/rev-2.jpg')" aria-hidden="true"></span>
+          <p>Лучшее решение за год. Telegram-бот для записи клиентов сделали за четыре дня. Уже разместил вторую задачу</p>
+        </div>
+      </blockquote>
+
+      <blockquote class="review">
+        <span class="review__author">— Кристина и Алексей, СПб</span>
+        <div class="review__row">
+          <span class="ava" style="--img:url('assets/rev-3.jpg')" aria-hidden="true"></span>
+          <p>tasko не просто находит исполнителя. Здесь реально заботятся о результате</p>
+        </div>
+      </blockquote>
+
+      <blockquote class="review">
+        <span class="review__author">— Анна, Екатеринбург</span>
+        <div class="review__row">
+          <span class="ava" style="--img:url('assets/rev-4.jpg')" aria-hidden="true"></span>
+          <p>Никогда никого не вызывала домой, было страшно. Но стиралка потекла. Мастер приехал через два часа, всё объяснил и ни разу не дал почувствовать себя глупой</p>
+        </div>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="pricing container" id="pricing">
+  <div class="pricing__head reveal">
+    <h2>Тарифы</h2>
+    <p>Разместить задачу — бесплатно. Тарифы нужны, если задач много и хочется приоритета</p>
+  </div>
+
+  <div class="plans">
+    <article class="plan reveal">
+      <h3>Базовый</h3>
+      <div class="plan__price"><span class="cur">₽</span><b>490</b><i>за пользователя<br>в месяц</i></div>
+      <p class="plan__for">Для частных заказчиков и небольших бытовых задач</p>
+      <a class="btn btn--dark plan__btn" href="#hero-form">Начать</a>
+      <a class="btn btn--outline plan__btn" href="#contacts">Связаться</a>
+      <div class="plan__features">
+        <h4>Возможности</h4>
+        <span class="plan__note">Всё из бесплатного плана плюс…</span>
+        <ul>
+          <li>До 10 задач в месяц</li>
+          <li>Базовая проверка исполнителей</li>
+          <li>Безопасная сделка</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="plan plan--pop reveal">
+      <div class="plan__top">
+        <h3>Профессиональный</h3>
+        <span class="plan__badge">Популярный</span>
+      </div>
+      <div class="plan__price"><span class="cur">₽</span><b>1 190</b><i>за пользователя<br>в месяц</i></div>
+      <p class="plan__for">Для тех, кто закрывает задачи постоянно и ценит скорость</p>
+      <a class="btn btn--lime plan__btn" href="#hero-form">Начать</a>
+      <a class="btn btn--outline-light plan__btn" href="#contacts">Связаться</a>
+      <div class="plan__features">
+        <h4>Возможности</h4>
+        <span class="plan__note">Всё из базового плана плюс…</span>
+        <ul>
+          <li>Безлимит задач</li>
+          <li>Приоритет в ленте исполнителей</li>
+          <li>Подбор исполнителя менеджером</li>
+          <li>Гарантия на работы 12 месяцев</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="plan reveal">
+      <h3>Бизнес</h3>
+      <div class="plan__price"><span class="cur">₽</span><b>2 900</b><i>за пользователя<br>в месяц</i></div>
+      <p class="plan__for">Для компаний с регулярным потоком задач и отчётностью</p>
+      <a class="btn btn--dark plan__btn" href="#contacts">Начать</a>
+      <a class="btn btn--outline plan__btn" href="#contacts">Связаться</a>
+      <div class="plan__features">
+        <h4>Возможности</h4>
+        <span class="plan__note">Всё из профессионального плюс…</span>
+        <ul>
+          <li>Закрывающие документы и НДС</li>
+          <li>Командные аккаунты и роли</li>
+          <li>Персональный менеджер</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq container" id="faq">
+  <div class="acc">
+    <details class="acc__item reveal" open>
+      <summary>Сколько стоит разместить задачу?<span class="acc__ic" aria-hidden="true"></span></summary>
+      <div class="acc__body"><p>Разместить задачу бесплатно. Вы платите только исполнителю — цену видите заранее и подтверждаете до начала работы.</p></div>
+    </details>
+    <details class="acc__item reveal">
+      <summary>Как проверяются исполнители?<span class="acc__ic" aria-hidden="true"></span></summary>
+      <div class="acc__body"><p>Паспорт, телефон и профиль проверяются вручную. У каждого исполнителя рейтинг, история заказов и отзывы, которые нельзя удалить.</p></div>
+    </details>
+    <details class="acc__item reveal">
+      <summary>Как происходит оплата? Какие способы вы принимаете?<span class="acc__ic" aria-hidden="true"></span></summary>
+      <div class="acc__body"><p>Деньги замораживаются на защищённом счёте и уходят исполнителю только после того, как вы приняли работу. Карты, СБП, Apple&nbsp;Pay и безналичный расчёт для компаний.</p></div>
+    </details>
+    <details class="acc__item reveal">
+      <summary>Что если работа сделана плохо?<span class="acc__ic" aria-hidden="true"></span></summary>
+      <div class="acc__body"><p>Не принимайте работу и откройте спор — поддержка подключится в течение часа. Если исполнитель не прав, деньги вернутся на карту, а задачу бесплатно переразместим.</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ CONTACTS ============ -->
+<section class="contacts container" id="contacts">
+  <div class="contacts__left reveal">
+    <h2>Контакты</h2>
+    <dl class="contacts__list">
+      <div><dt>E-mail:</dt><dd><a href="mailto:hello@tasko.ru">hello@tasko.ru</a></dd></div>
+      <div><dt>Telegram:</dt><dd><a href="#contacts">@tasko.support</a></dd></div>
+      <div><dt>Телефон:</dt><dd><a href="tel:+74951234567">+7 495 123 45 67</a></dd></div>
+    </dl>
+    <dl class="contacts__list contacts__list--office">
+      <div><dt>Главный офис:</dt><dd>ул. Большая Дмитровка 15<br>127006, Москва</dd></div>
+    </dl>
+  </div>
+
+  <div class="contacts__right reveal">
+    <article class="ccard ccard--lime">
+      <div class="ccard__top">
+        <span class="ava" style="--img:url('assets/founder.jpg')" aria-hidden="true"></span>
+        <div>
+          <b>Михаил Йохансен</b>
+          <span>Основатель tasko</span>
+        </div>
+        <span class="ccard__dot" aria-hidden="true">◔</span>
+      </div>
+      <p>«Я создал tasko, потому что верю: никто не должен тратить выходные на то, что кто-то сделает за час»</p>
+      <div class="ccard__foot">
+        <a class="btn btn--white" href="mailto:hello@tasko.ru">Написать</a>
+        <span class="arrow-circle arrow-circle--dark" aria-hidden="true">↗</span>
+      </div>
+    </article>
+
+    <article class="ccard ccard--hours">
+      <h3>Часы работы:</h3>
+      <span class="ccard__time">09:00 – 21:00</span>
+      <ul class="days">
+        <li>Пн</li><li>Вт</li><li>Ср</li><li>Чт</li><li>Пт</li>
+        <li class="off">Сб</li><li class="off">Вс</li>
+      </ul>
+      <div class="days__line" aria-hidden="true"></div>
+    </article>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <span class="footer__logo">tasko</span>
+    </div>
+
+    <nav class="footer__nav" aria-label="Подвал">
+      <a href="#about">О СЕРВИСЕ</a>
+      <a href="#contacts">КОНТАКТЫ</a>
+      <span class="footer__gap"></span>
+      <a href="mailto:hello@tasko.ru">HELLO@TASKO.RU</a>
+      <a href="#contacts">@TASKO.SUPPORT</a>
+      <a href="tel:+74951234567">+7 495 123 45 67</a>
+    </nav>
+
+    <div class="footer__sub">
+      <p>Одни собирают вещи, а мы — решённые задачи.<br>Новости, советы и лучшие исполнители — раз в месяц</p>
+      <form class="subscribe subscribe--footer" novalidate>
+        <label class="sr-only" for="footMail">E-mail</label>
+        <input id="footMail" name="email" type="email" placeholder="Введите e-mail" autocomplete="email" required>
+        <button class="btn btn--white" type="submit">Подписаться <span aria-hidden="true">→</span></button>
+        <p class="form__msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <span>©2026 TASKO<br>ВСЕ ПРАВА ЗАЩИЩЕНЫ</span>
+    <span class="footer__legal"><a href="#faq">УСЛОВИЯ И ОФЕРТА /</a><br><a href="#faq">СПОСОБЫ ОПЛАТЫ</a></span>
+    <span class="footer__socials">
+      <a class="btn btn--tiny" href="mailto:hello@tasko.ru">E-mail</a>
+      <a class="btn btn--tiny" href="#contacts">Telegram</a>
+      <a class="btn btn--tiny" href="#contacts">ВКонтакте</a>
+    </span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
