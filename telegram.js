@@ -116,6 +116,41 @@ TASKO.config = {
     if (e.key === 'Escape' && !modal.hidden) close();
   });
 
+
+  /* ---------- Любое действие требует входа ----------
+     Один делегированный обработчик на документ: перехватываем клики
+     по кнопкам и действиям до того, как сработают их собственные
+     обработчики. Навигация (меню, якоря, логотип) и подсказки под
+     поиском не трогаются — иначе по сайту нельзя было бы ходить. */
+  var ACTIONS = '.btn, .tile, .req__go, .link--arrow';
+
+  function needsAuth(el) {
+    if (!el) return false;
+    if (el.closest('#auth')) return false;            // внутри окна входа
+    if (el.closest('[data-auth-open]')) return false; // сама кнопка «Войти»
+    return true;
+  }
+
+  function isLoggedIn() { return !!readProfile(); }
+
+  document.addEventListener('click', function (e) {
+    if (isLoggedIn()) return;
+    var el = e.target instanceof Element ? e.target.closest(ACTIONS) : null;
+    if (!needsAuth(el)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open();
+  }, true);
+
+  // Enter в поле поиска и подписки — тоже действие
+  document.addEventListener('submit', function (e) {
+    if (isLoggedIn()) return;
+    if (e.target.closest('#auth')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open();
+  }, true);
+
   /* ---------- Виджет входа для обычного сайта ---------- */
   function mountWidget() {
     var box = document.getElementById('tgWidget');
