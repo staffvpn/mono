@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -35,6 +36,10 @@
     </nav>
 
     <div class="header__side">
+      <button class="btn btn--outline header__login" type="button" data-auth-open>
+        <span class="header__login-avatar" hidden></span>
+        <span data-auth-label>Войти</span>
+      </button>
       <a class="btn btn--accent header__cta" href="#hero-form">Разместить задачу</a>
       <button class="burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mobilemenu">
         <span></span><span></span>
@@ -50,6 +55,9 @@
     <a href="#reviews">Отзывы</a>
     <a href="#faq">Вопросы</a>
     <a href="#contacts">Контакты</a>
+    <button class="btn btn--outline mobilemenu__cta" type="button" data-auth-open>
+      <span data-auth-label>Войти через Telegram</span>
+    </button>
     <a class="btn btn--accent mobilemenu__cta" href="#hero-form">Разместить задачу</a>
   </div>
 </header>
@@ -493,6 +501,79 @@
   </div>
 </footer>
 
+
+<!-- ================= ОКНО ВХОДА ================= -->
+<div class="modal" id="auth" hidden>
+  <div class="modal__back" data-auth-close></div>
+
+  <div class="modal__win" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="modal__x" type="button" data-auth-close aria-label="Закрыть">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+
+    <!-- шаг 1: приглашение -->
+    <section class="auth" data-step="intro">
+      <span class="auth__badge" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><path d="M50 2l11 30 32-8-20 26 20 26-32-8-11 30-11-30-32 8 20-26L7 24l32 8z"/></svg>
+        <b>1<i>тап</i></b>
+      </span>
+
+      <h2 id="authTitle">Заходим?</h2>
+      <p class="auth__lead">Задачи, отклики и переписка — в одном месте. Без паролей и СМС.</p>
+
+      <ul class="auth__list">
+        <li>Отклики приходят прямо в Telegram</li>
+        <li>История задач не теряется</li>
+        <li>Берём только имя и аватар</li>
+      </ul>
+
+      <div class="auth__widget" id="tgWidget"></div>
+
+      <button class="btn btn--accent btn--lg auth__go" type="button" data-auth-go>
+        <svg class="tg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.3 2.9 11.4c-.9.3-.9 1.5.1 1.8l4.7 1.4 1.8 5.4c.3.8 1.3.9 1.8.3l2.5-2.7 4.7 3.5c.7.5 1.6.1 1.8-.7l3-14.6c.2-.9-.7-1.6-1.8-1.5z"/></svg>
+        Войти через Telegram
+      </button>
+
+      <p class="auth__note" data-auth-note>Нажимая, вы соглашаетесь с условиями сервиса</p>
+    </section>
+
+    <!-- шаг 2: ждём Telegram -->
+    <section class="auth auth--wait" data-step="wait" hidden>
+      <span class="auth__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <h2>Проверяем Telegram…</h2>
+      <p class="auth__lead">Секунда — и вы внутри</p>
+    </section>
+
+    <!-- шаг 3: профиль (наполним позже) -->
+    <section class="auth auth--profile" data-step="profile" hidden>
+      <div class="prof__top">
+        <span class="prof__ava" data-prof-ava aria-hidden="true"></span>
+        <div class="prof__who">
+          <b data-prof-name>Гость</b>
+          <span data-prof-tag>@guest</span>
+        </div>
+      </div>
+
+      <div class="prof__stats">
+        <div><b>0</b><span>задач</span></div>
+        <div><b>0</b><span>откликов</span></div>
+        <div><b>—</b><span>рейтинг</span></div>
+      </div>
+
+      <ul class="prof__menu">
+        <li><span>Мои задачи</span><i>скоро</i></li>
+        <li><span>Отклики и чаты</span><i>скоро</i></li>
+        <li><span>Способы оплаты</span><i>скоро</i></li>
+        <li><span>Настройки</span><i>скоро</i></li>
+      </ul>
+
+      <p class="auth__note" data-prof-note></p>
+      <button class="btn btn--outline prof__out" type="button" data-auth-logout>Выйти</button>
+    </section>
+  </div>
+</div>
+
 <script src="script.js"></script>
+<script src="telegram.js"></script>
 </body>
 </html>
