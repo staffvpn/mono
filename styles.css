@@ -706,12 +706,6 @@ button,input{font:inherit;color:inherit}
 /* ---- профиль ---- */
 .auth--profile{align-items:stretch;text-align:left;gap:18px}
 .prof__top{display:flex;align-items:center;gap:15px}
-.prof__ava{
-  width:66px;height:66px;border-radius:50%;flex:none;
-  border:var(--bd);box-shadow:4px 4px 0 var(--ink);
-  background:var(--sand) center/cover no-repeat;
-  display:grid;place-items:center;font-size:26px;font-weight:700;
-}
 .prof__who{display:flex;flex-direction:column;gap:2px;min-width:0}
 .prof__who b{font-size:22px;font-weight:700;letter-spacing:-.028em}
 .prof__who span{font-size:14.5px;color:var(--ink-45)}
@@ -736,6 +730,79 @@ button,input{font:inherit;color:inherit}
 }
 .prof__out{width:100%}
 
+/* ---- выбор аватара ---- */
+.prof__ava{
+  position:relative;padding:0;cursor:pointer;
+  width:66px;height:66px;border-radius:50%;flex:none;
+  border:var(--bd);box-shadow:4px 4px 0 var(--ink);background:var(--sand);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.prof__ava>span{
+  position:absolute;inset:0;border-radius:50%;
+  background:var(--sand) center/cover no-repeat;
+  display:grid;place-items:center;font-size:26px;font-weight:700;
+}
+.prof__ava i{
+  position:absolute;right:-6px;bottom:-6px;z-index:2;
+  width:26px;height:26px;border-radius:50%;background:var(--orange);
+  border:2px solid var(--ink);display:grid;place-items:center;
+  transition:transform .25s var(--bounce);
+}
+.prof__ava i svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round}
+.prof__ava:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.prof__ava:hover i{transform:rotate(90deg) scale(1.1)}
+
+.prof__change{
+  align-self:flex-start;margin-top:3px;padding:0;border:0;background:transparent;cursor:pointer;
+  font-size:13.5px;font-weight:700;color:var(--orange);
+  border-bottom:2px solid transparent;transition:border-color .25s var(--ease);
+}
+.prof__change:hover{border-bottom-color:var(--orange)}
+
+.avpick{
+  display:flex;flex-direction:column;gap:14px;
+  border:var(--bd-thin);border-radius:20px;padding:16px;background:var(--paper-2);
+  animation:avIn .4s var(--bounce) both;
+}
+@keyframes avIn{from{opacity:0;transform:translateY(-10px) scale(.97)}to{opacity:1;transform:none}}
+
+.avpick__tabs{display:flex;gap:8px}
+.avpick__tabs button{
+  flex:1;padding:11px 14px;border:var(--bd-thin);border-radius:999px;background:var(--paper);
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:background .25s var(--ease),color .25s var(--ease),transform .2s var(--ease);
+}
+.avpick__tabs button[aria-selected="true"]{background:var(--orange);color:#fff;box-shadow:3px 3px 0 var(--ink)}
+.avpick__tabs button:not([aria-selected="true"]):hover{background:var(--sand)}
+
+.avpick__grid{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;
+}
+.avpick__grid button{
+  aspect-ratio:1;border-radius:50%;cursor:pointer;padding:0;
+  border:2px solid var(--ink);background:var(--sand) center/cover no-repeat;
+  transition:transform .25s var(--bounce),box-shadow .2s var(--ease);
+}
+.avpick__grid button:hover{transform:scale(1.12);box-shadow:2px 2px 0 var(--ink)}
+.avpick__grid button[aria-pressed="true"]{
+  box-shadow:0 0 0 3px var(--orange),3px 3px 0 var(--ink);transform:scale(1.06);
+}
+
+.avpick__up{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 18px;border:2px dashed var(--ink);border-radius:16px;background:var(--paper);
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:background .25s var(--ease),border-color .25s var(--ease);
+}
+.avpick__up:hover{background:var(--sand);border-color:var(--orange)}
+.avpick__up svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.avpick__note{font-size:12px;color:var(--ink-45);text-align:center}
+
+@media (max-width:560px){
+  .avpick__grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+  .avpick{padding:13px}
+}
+
 /* ============================================================
    РЕЖИМ MINI APP: Telegram рисует свою шапку поверх страницы
    ============================================================ */
@@ -751,7 +818,8 @@ button,input{font:inherit;color:inherit}
   .modal__win{padding:24px 20px;border-radius:24px}
   .modal__x{right:12px;top:12px;width:36px;height:36px}
   .auth h2{font-size:25px}
-  .prof__ava{width:56px;height:56px;font-size:22px}
+  .prof__ava{width:56px;height:56px}
+  .prof__ava>span{font-size:22px}
   .prof__who b{font-size:19px}
 }
 

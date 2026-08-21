@@ -51,7 +51,22 @@ TASKO.config = {
 На `<html>` вешается класс `in-telegram` — по нему в `styles.css`
 сдвигается шапка и прячется навигация, дублирующая меню Telegram.
 
-## 3. Проверка подписи — обязательный шаг
+## 3. Проверка подписи — уже написана
+
+Функция лежит в **`api/auth.js`** и деплоится на Vercel как есть.
+Она проверяет оба сценария — `initData` у Mini App и ответ веб-виджета, —
+сравнивает подпись в постоянном времени и отбраковывает данные старше суток.
+`telegram.js` уже указывает на неё: `verifyUrl: '/api/auth'`.
+
+Осталось задать токен:
+
+**Vercel → Project → Settings → Environment Variables → `BOT_TOKEN`**
+
+⚠️ **Токен в репозиторий не кладём никогда.** Он даёт полный доступ к боту:
+читать переписку, писать от его имени и подделывать подписи входа.
+В `.gitignore` закрыты `.env` и `.env.*`, в `.env.example` — пустая заготовка.
+
+### Как устроена проверка
 
 **Данные из Telegram нельзя принимать на веру.** И `initData` у Mini App,
 и ответ веб-виджета подписаны токеном бота, и проверять подпись можно
@@ -65,57 +80,13 @@ TASKO.config = {
 
 и должен вернуть `{ "profile": { "id": 1, "name": "…", "tag": "@…", "photo": "…" } }`.
 
-### Пример на Node
+Подпись строится из всех полей, отсортированных по имени, склеенных
+через перевод строки. Секрет для Mini App — `HMAC(«WebAppData», токен)`,
+для виджета — `SHA256(токен)`. Разные схемы, поэтому и две функции.
 
-```js
-import crypto from 'node:crypto';
-
-const TOKEN = process.env.BOT_TOKEN;
-
-// Mini App: initData — строка вида "query_id=…&user=…&hash=…"
-function checkInitData(initData) {
-  const params = new URLSearchParams(initData);
-  const hash = params.get('hash');
-  params.delete('hash');
-
-  const dataCheckString = [...params.entries()]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`)
-    .join('\n');
-
-  const secret = crypto.createHmac('sha256', 'WebAppData').update(TOKEN).digest();
-  const sign = crypto.createHmac('sha256', secret).update(dataCheckString).digest('hex');
-
-  if (sign !== hash) return null;
-
-  // не принимать протухшие данные
-  const authDate = Number(params.get('auth_date')) * 1000;
-  if (Date.now() - authDate > 24 * 60 * 60 * 1000) return null;
-
-  return JSON.parse(params.get('user'));
-}
-
-// Веб-виджет: приходит объект с полем hash
-function checkWidget(user) {
-  const { hash, ...rest } = user;
-  const dataCheckString = Object.keys(rest).sort()
-    .map(k => `${k}=${rest[k]}`).join('\n');
-
-  const secret = crypto.createHash('sha256').update(TOKEN).digest();
-  const sign = crypto.createHmac('sha256', secret).update(dataCheckString).digest('hex');
-
-  if (sign !== hash) return null;
-  if (Date.now() / 1000 - rest.auth_date > 86400) return null;
-  return rest;
-}
-```
-
-Дальше — своя сессия: положите пользователя в базу и выдайте httpOnly-куку
+Дальше — своя сессия: положить пользователя в базу и выдать httpOnly-куку
 или JWT. `localStorage` в `telegram.js` хранит только имя и аватар для
 отрисовки, сессией он не является.
-
-На Vercel это кладётся в `api/auth.js` как serverless-функция.
-`BOT_TOKEN` — в переменные окружения проекта, не в репозиторий.
 
 ## 4. Что уже сделано в интерфейсе
 
@@ -137,8 +108,17 @@ function checkWidget(user) {
 - После входа кнопка в шапке превращается в имя с аватаркой.
 - Профиль — заготовка: статистика и разделы помечены «скоро».
 
-## 5. Чего ещё нет
+## 5. Что нужно, чтобы вход заработал
 
-- Бэкенда с проверкой подписи (см. пункт 3) — без него вход демонстрационный.
+1. **Имя бота** — впишите в `TASKO.config.bot` в `telegram.js`.
+2. **`/setdomain`** в @BotFather → домен сайта. Без этого веб-виджет молчит.
+3. **`BOT_TOKEN`** в переменных окружения Vercel.
+4. Задеплоить — `api/auth.js` подхватится автоматически.
+
+До этого работает демо-режим, профиль честно помечен как демонстрационный.
+
+## 6. Чего ещё нет
+
+- Сессии: сейчас функция возвращает профиль, но куку не выдаёт.
 - Наполнения профиля: задачи, отклики, чаты, оплата.
 - Привязки задач к пользователю — нужна база.

@@ -8,9 +8,9 @@ TASKO.config = {
   // имя бота без @, например 'tasko_login_bot'.
   // Пусто → работает демо-режим без реального входа.
   bot: '',
-  // эндпоинт бэкенда, который проверяет подпись Telegram.
-  // Пусто → профиль показывается локально и помечается как демо.
-  verifyUrl: ''
+  // проверка подписи на сервере: функция лежит в api/auth.js.
+  // Работает после деплоя на Vercel с переменной BOT_TOKEN.
+  verifyUrl: '/api/auth'
 };
 
 (function () {
@@ -88,6 +88,7 @@ TASKO.config = {
     if (inTelegram && tg.BackButton) { try { tg.BackButton.show(); } catch (e) {} }
 
     var saved = readProfile();
+    if (avPanel) avPanel.hidden = true;
     if (saved) { fillProfile(saved); show('profile'); }
     else { show('intro'); mountWidget(); }
 
@@ -314,6 +315,98 @@ TASKO.config = {
       var raw = localStorage.getItem(STORE);
       return raw ? JSON.parse(raw) : null;
     } catch (e) { return null; }
+  }
+
+
+  /* ---------- Выбор аватара ---------- */
+  var AV_COUNT = 10;
+  var avPanel = modal.querySelector('[data-av-panel]');
+  var avGrid = modal.querySelector('[data-av-grid]');
+  var avKind = 'man';
+
+  function avPath(kind, i) {
+    return 'assets/av/' + kind + '-' + (i < 10 ? '0' + i : i) + '.webp';
+  }
+
+  function renderGrid() {
+    var current = (readProfile() || {}).photo || '';
+    avGrid.innerHTML = '';
+    for (var i = 1; i <= AV_COUNT; i++) {
+      var src = avPath(avKind, i);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.style.backgroundImage = 'url("' + src + '")';
+      b.setAttribute('aria-label', 'Аватар ' + i);
+      b.setAttribute('aria-pressed', String(current === src));
+      b.dataset.src = src;
+      avGrid.appendChild(b);
+    }
+  }
+
+  modal.querySelectorAll('[data-av-open]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = avPanel.hidden;
+      avPanel.hidden = !open;
+      if (open) { renderGrid(); avPanel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    });
+  });
+
+  modal.querySelectorAll('[data-av-tab]').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      avKind = tab.getAttribute('data-av-tab');
+      modal.querySelectorAll('[data-av-tab]').forEach(function (t) {
+        t.setAttribute('aria-selected', String(t === tab));
+      });
+      renderGrid();
+    });
+  });
+
+  avGrid.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-src]');
+    if (!b) return;
+    setPhoto(b.dataset.src);
+    renderGrid();
+  });
+
+  /* Своё фото: уменьшаем до 320px и кладём в localStorage.
+     Исходник с телефона весит мегабайты и в хранилище не влезет. */
+  var avFile = modal.querySelector('[data-av-file]');
+  avFile.addEventListener('change', function () {
+    var file = avFile.files && avFile.files[0];
+    if (!file) return;
+    if (!/^image\//.test(file.type)) return;
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var side = Math.min(img.width, img.height);
+        var canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 320;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 320, 320);
+
+        var data = canvas.toDataURL('image/webp', 0.85);
+        // Safari до 16 не умеет кодировать webp — падаем на jpeg
+        if (data.indexOf('data:image/webp') !== 0) data = canvas.toDataURL('image/jpeg', 0.85);
+
+        setPhoto(data);
+        renderGrid();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+    avFile.value = '';
+  });
+
+  function setPhoto(src) {
+    var p = readProfile() || { name: 'Гость', tag: '', demo: true };
+    p.photo = src;
+    saveProfile(p);
+    fillProfile(p);
+    if (inTelegram && tg.HapticFeedback) {
+      try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
+    }
   }
 
   /* ---------- Старт ---------- */

@@ -300,7 +300,7 @@
       <blockquote class="quote reveal">
         <p>Мастер приехал со своим инструментом, всё собрал за вечер и мусор увёз. Цену назвали сразу — и она не изменилась.</p>
         <footer>
-          <span class="ava" style="--img:url('assets/rev-1.jpg')" aria-hidden="true"></span>
+          <span class="ava" style="--img:url('assets/av/man-04.webp')" aria-hidden="true"></span>
           <span><b>Тимур</b>Москва · сборка кухни</span>
         </footer>
       </blockquote>
@@ -308,7 +308,7 @@
       <blockquote class="quote reveal">
         <p>Бота для записи клиентов сделали за четыре дня. Лучшее решение за год — уже разместил вторую задачу.</p>
         <footer>
-          <span class="ava" style="--img:url('assets/rev-2.jpg')" aria-hidden="true"></span>
+          <span class="ava" style="--img:url('assets/av/man-06.webp')" aria-hidden="true"></span>
           <span><b>Марк</b>Казань · Telegram-бот</span>
         </footer>
       </blockquote>
@@ -316,7 +316,7 @@
       <blockquote class="quote reveal">
         <p>Никогда никого не вызывала домой, было страшно. Мастер приехал через два часа и ни разу не дал почувствовать себя глупой.</p>
         <footer>
-          <span class="ava" style="--img:url('assets/rev-3.jpg')" aria-hidden="true"></span>
+          <span class="ava" style="--img:url('assets/av/girl-03.webp')" aria-hidden="true"></span>
           <span><b>Анна</b>Екатеринбург · ремонт техники</span>
         </footer>
       </blockquote>
@@ -446,7 +446,7 @@
       </div>
 
       <div class="cta__card">
-        <span class="ava ava--lg" style="--img:url('assets/founder.jpg')" aria-hidden="true"></span>
+        <span class="ava ava--lg" style="--img:url('assets/av/man-01.webp')" aria-hidden="true"></span>
         <p>«Я сделал tasko, потому что никто не должен тратить выходные на то, что кто-то сделает за час»</p>
         <b>Михаил Йохансен</b>
         <span>Основатель tasko</span>
@@ -547,11 +547,33 @@
     <!-- шаг 3: профиль (наполним позже) -->
     <section class="auth auth--profile" data-step="profile" hidden>
       <div class="prof__top">
-        <span class="prof__ava" data-prof-ava aria-hidden="true"></span>
+        <button class="prof__ava" type="button" data-av-open aria-label="Сменить аватар">
+          <span data-prof-ava aria-hidden="true"></span>
+          <i aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </i>
+        </button>
         <div class="prof__who">
           <b data-prof-name>Гость</b>
           <span data-prof-tag>@guest</span>
+          <button class="prof__change" type="button" data-av-open>Сменить аватар</button>
         </div>
+      </div>
+
+      <div class="avpick" data-av-panel hidden>
+        <div class="avpick__tabs" role="tablist" aria-label="Кто вы">
+          <button type="button" role="tab" data-av-tab="man" aria-selected="true">Парни</button>
+          <button type="button" role="tab" data-av-tab="girl" aria-selected="false">Девушки</button>
+        </div>
+
+        <div class="avpick__grid" data-av-grid></div>
+
+        <label class="avpick__up">
+          <input type="file" accept="image/*" data-av-file hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Загрузить своё фото
+        </label>
+        <p class="avpick__note">Фото хранится только в вашем браузере</p>
       </div>
 
       <div class="prof__stats">
