@@ -427,22 +427,23 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
 }
 .row:hover .row__peek{opacity:1;transform:translateY(-50%) rotate(-7deg) scale(1)}
 
-/* ---- карточки категорий ---- */
+/* ---- карточки категорий: активная широкая, остальные узкие ---- */
 .cards{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);
+  display:flex;gap:var(--gap);
   margin-top:clamp(34px,4vw,60px);
 }
 .card{
   position:relative;border-radius:var(--r-lg);overflow:hidden;
-  min-height:clamp(330px,32vw,420px);
+  min-height:clamp(340px,33vw,440px);
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:16px;color:#fff;isolation:isolate;
-  transform-origin:center;
-  transition:transform .5s var(--ease),opacity .5s var(--ease);
+  flex:1 1 0;min-width:0;
+  transition:flex-grow .55s var(--ease),opacity .45s var(--ease);
 }
-@media (hover:hover) and (min-width:761px){
-  .cards:hover .card{transform:scale(.94);opacity:.88}
-  .cards .card:hover{transform:scale(1.06);opacity:1;z-index:3}
+.cards .card:first-child{flex-grow:1.75}
+@media (hover:hover) and (min-width:1081px){
+  .cards:hover .card{flex-grow:1;opacity:.9}
+  .cards .card:hover{flex-grow:1.75;opacity:1}
 }
 .card::after{
   content:"";position:absolute;inset:0;z-index:-1;
@@ -719,7 +720,8 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
   .bento__card--sage{grid-column:span 1}
   .bento__card--words{grid-column:span 2;min-height:200px}
   .words__cta{right:22px}
-  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards{flex-wrap:wrap}
+  .cards .card,.cards .card:first-child{flex:1 1 calc(50% - var(--gap) / 2)}
 }
 
 @media (max-width:1080px){
@@ -769,8 +771,8 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
   .row__arrow{grid-area:arrow;align-self:start;background:var(--surface)}
   .row__peek{display:none}
   .row:hover{padding-left:4px;background:none}
-  .cards{grid-template-columns:1fr}
-  .card{min-height:300px}
+  .cards{flex-direction:column}
+  .cards .card,.cards .card:first-child{flex:0 0 auto;min-height:300px}
   .hero__note{
     position:static;width:auto;padding:14px 0 0;background:transparent;
     border-radius:0;text-align:left;
