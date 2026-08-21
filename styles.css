@@ -561,12 +561,12 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
 .plan{
   background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);
   padding:clamp(20px,2vw,30px);
-  display:flex;flex-direction:column;gap:14px;
+  display:flex;flex-direction:column;gap:14px;min-width:0;
   transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .3s var(--ease);
 }
 .plan:hover{transform:translateY(-4px);box-shadow:0 20px 46px rgba(20,25,20,.09);border-color:var(--accent)}
 .plan h3{font-size:clamp(20px,1.7vw,24px);font-weight:600;letter-spacing:-.02em}
-.plan__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.plan__top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .plan__badge{
   padding:5px 12px;border-radius:999px;background:var(--accent);color:var(--ink);
   font-size:11px;font-weight:500;white-space:nowrap;
@@ -739,7 +739,7 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
 @media (max-width:980px){
   .hero{grid-template-columns:1fr}
   .hero__left{min-height:0;padding-block:38px}
-  .hero__media{min-height:min(94vw,470px)}
+  .hero__media{min-height:min(78vw,470px)}
   .float--a{left:auto;right:5%;top:52%}
   .float--b{left:auto;right:5%;top:40%}
   .float--c{left:auto;right:5%;top:64%}
@@ -771,6 +771,8 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
   .row__arrow{grid-area:arrow;align-self:start;background:var(--surface)}
   .row__peek{display:none}
   .row:hover{padding-left:4px;background:none}
+  .hero__left{padding-block:32px;gap:18px}
+  .hero__media{min-height:min(85vw,420px)}
   .cards{flex-direction:column}
   .cards .card,.cards .card:first-child{flex:0 0 auto;min-height:300px}
   .hero__note{
@@ -801,10 +803,15 @@ a.float:hover{background:rgba(255,255,255,.4);transform:translateY(-2px)}
   .form__msg{position:static;opacity:1;transform:none;text-align:center;margin-top:2px;height:0;overflow:hidden;transition:height .3s var(--ease)}
   .form__msg.is-on{height:auto}
   .proof{flex-direction:column;text-align:center;gap:8px}
-  .mini-card{width:min(78%,250px);left:12px;top:12px}
+  .mini-card{width:min(72%,228px);left:12px;top:12px}
+  .mini-card__img{height:60px}
   .float--a,.float--b,.float--c,.float--join{display:none}
   .float--cta{left:12px;bottom:12px;font-size:12px}
-  .hero__media{min-height:min(120vw,430px)}
+  .hero__media{min-height:clamp(360px,95vw,368px)}
+  .hero__left{padding-block:28px;gap:16px}
+  .hero__title{font-size:26px}
+  .subscribe input{padding:14px 18px}
+  .subscribe .btn{padding:14px 20px}
   .acc__item summary{gap:12px}
   .acc__ic{width:32px;height:32px;border-radius:10px}
   .days li{width:30px;height:30px}
