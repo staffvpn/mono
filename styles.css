@@ -337,16 +337,19 @@ button,input{font:inherit;color:inherit}
 .step p{font-size:15.5px;line-height:1.55;color:var(--ink-70)}
 
 /* ============ НАПРАВЛЕНИЯ ============ */
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(18px,2.2vw,30px)}
+.tiles{display:flex;gap:clamp(18px,2.2vw,30px)}
 .tile{
+  flex:1 1 0;min-width:0;
   display:flex;flex-direction:column;gap:2px;
-  transition:transform .45s var(--bounce);
+  transition:flex-grow .5s var(--ease);
 }
+/* высота картинки фиксирована: при расширении ряд не растёт по вертикали
+   и содержимое ниже не прыгает */
 .frame--tile{
-  width:100%;aspect-ratio:1;overflow:hidden;
+  width:100%;height:clamp(230px,23vw,320px);overflow:hidden;
   transition:transform .4s var(--ease);
 }
-.frame--tile .frame__img{aspect-ratio:1;transition:transform .5s var(--ease)}
+.frame--tile .frame__img{height:100%;background-position:center 40%}
 .tile:nth-child(odd) .frame--tile{transform:rotate(-1.4deg)}
 .tile:nth-child(even) .frame--tile{transform:rotate(1.4deg)}
 .tile__go{
@@ -358,13 +361,16 @@ button,input{font:inherit;color:inherit}
 }
 
 /* затемнение с размытием под подписью — включается на наведении */
+/* вуаль занимает всю картинку: раньше она была высотой 58% снизу,
+   и её верхняя граница давала видимый шов поперёк кадра */
 .tile__veil{
-  position:absolute;left:0;right:0;bottom:0;height:58%;z-index:1;
-  background:linear-gradient(180deg,rgba(14,14,24,0) 0%,rgba(14,14,24,.55) 45%,rgba(14,14,24,.9) 100%);
-  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 42%);
-          mask-image:linear-gradient(180deg,transparent 0%,#000 42%);
-  opacity:0;transition:opacity .4s var(--ease);
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,
+    rgba(14,14,24,0) 30%,
+    rgba(14,14,24,.42) 62%,
+    rgba(14,14,24,.78) 84%,
+    rgba(14,14,24,.92) 100%);
+  opacity:0;transition:opacity .45s var(--ease);
 }
 
 /* подпись: по умолчанию под картинкой, отрицательный сдвиг гасит
@@ -383,11 +389,9 @@ button,input{font:inherit;color:inherit}
 .tile:hover .tile__go{background:var(--orange);color:#fff;transform:rotate(45deg)}
 
 @media (hover:hover){
-  /* карточка разрастается поверх соседних; крайние растут внутрь ряда,
-     иначе вылезают за край экрана */
-  .tile:hover{transform:scale(1.34);z-index:10}
-  .tiles .tile:first-child:hover{transform-origin:left center}
-  .tiles .tile:last-child:hover{transform-origin:right center}
+  /* наведённая забирает ширину, соседние ужимаются и отодвигаются */
+  .tiles:hover .tile{flex-grow:.85}
+  .tiles .tile:hover{flex-grow:1.55}
   .tile:hover .tile__veil{opacity:1}
   /* -100% — собственная высота подписи, 2px — gap, 3px — рамка картинки:
      подпись встаёт ровно внутрь нижнего края */
@@ -629,10 +633,8 @@ button,input{font:inherit;color:inherit}
   .tasknote{margin-left:0;align-self:flex-start;width:min(88%,320px)}
   .steps{grid-template-columns:1fr;gap:20px}
   .step:nth-child(2),.step:nth-child(3){transform:none}
-  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tile:hover{transform:scale(1.16)}
-  .tiles .tile:nth-child(odd):hover{transform-origin:left center}
-  .tiles .tile:nth-child(even):hover{transform-origin:right center}
+  .tiles{flex-wrap:wrap}
+  .tile,.tiles:hover .tile,.tiles .tile:hover{flex:1 1 40%}
   .quotes{grid-template-columns:1fr;gap:30px}
   .quote p,.quote:nth-child(2) p,.quote:nth-child(3) p{--tilt:0deg}
   .plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
@@ -661,8 +663,9 @@ button,input{font:inherit;color:inherit}
   .form__msg{position:static;opacity:1;transform:none;margin-top:12px;height:0;overflow:hidden}
   .form__msg.is-on{height:auto}
   .suggest button{padding:7px 13px;font-size:13px}
-  .tiles{grid-template-columns:1fr;gap:26px}
-  .tile:hover{transform:none}
+  .tiles{flex-direction:column;gap:26px}
+  .tile,.tiles:hover .tile,.tiles .tile:hover{flex:0 0 auto}
+  .frame--tile{height:clamp(240px,62vw,320px)}
   .sticker{width:78px;left:-4%;top:-5%}
   .tasknote{width:min(94%,300px);margin-top:-30px}
   .stats__inner{grid-template-columns:1fr;gap:22px}
