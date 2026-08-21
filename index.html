@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>tasko — опишите задачу, остальное сделаем мы</title>
 <meta name="description" content="tasko — сервис задач: опишите, что нужно, и проверенные исполнители откликнутся за 15 минут. Собрать шкаф, починить стиралку, сделать Telegram-бота, отвезти документы.">
-<meta name="theme-color" content="#FBF7F3">
+<meta name="theme-color" content="#FFF8F0">
 <meta property="og:title" content="tasko — опишите задачу, остальное сделаем мы">
 <meta property="og:description" content="Отклики за 15 минут, безопасная сделка, оплата после проверки работы.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%230E0E18'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' stroke='%23F25D19' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='9' fill='%23F25D19' stroke='%230E0E18' stroke-width='3'/%3E%3Cpath d='M10 16.5l4 4L22 12' stroke='%230E0E18' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,7 +22,9 @@
 <!-- ================= ШАПКА ================= -->
 <header class="header" id="top">
   <div class="header__inner">
-    <a class="logo" href="#top" aria-label="tasko — на главную">tasko<span class="logo__dot" aria-hidden="true"></span></a>
+    <a class="logo" href="#top" aria-label="tasko — на главную">
+      tasko<span class="logo__dot" aria-hidden="true"></span>
+    </a>
 
     <nav class="nav" aria-label="Основная навигация">
       <a href="#how">Как это работает</a>
@@ -55,31 +57,29 @@
 <main id="main">
 
 <!-- ================= ПЕРВЫЙ ЭКРАН ================= -->
-<section class="hero">
-  <div class="container hero__head">
-    <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>12 000 задач закрыто с 2018 года</p>
+<section class="hero container">
+  <div class="hero__left reveal">
+    <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>12 000 задач закрыто с 2018 года</p>
 
-    <h1 class="hero__title reveal">
+    <h1 class="hero__title">
       Опишите задачу —<br>
-      <span class="ink-line">остальное</span> сделаем мы
+      <span class="pop">остальное</span><br>
+      сделаем мы
     </h1>
 
-    <p class="hero__lead reveal">
+    <p class="hero__lead">
       Собрать шкаф, починить стиралку, сделать Telegram-бота или отвезти документы.
       Вы пишете, что нужно, — исполнители откликаются за 15 минут.
     </p>
 
-    <form class="search reveal" id="hero-form" novalidate>
+    <form class="search" id="hero-form" novalidate>
       <label class="sr-only" for="heroTask">Опишите задачу</label>
-      <span class="search__ic" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
-      </span>
       <input id="heroTask" name="task" type="text" placeholder="Что нужно сделать?" autocomplete="off" required>
-      <button class="btn btn--accent" type="submit">Найти исполнителя</button>
+      <button class="btn btn--accent" type="submit">Поехали!</button>
       <p class="form__msg" role="status" aria-live="polite"></p>
     </form>
 
-    <div class="suggest reveal">
+    <div class="suggest">
       <span>Например:</span>
       <button type="button" data-fill="Собрать шкаф-купе 2,4 м">собрать шкаф</button>
       <button type="button" data-fill="Починить стиральную машину, не сливает воду">починить стиралку</button>
@@ -88,32 +88,42 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="hero__band reveal" style="--img:url('assets/hero.jpg')">
-      <article class="glass glass--task">
-        <span class="glass__label">Новая задача · 10:24</span>
-        <h2>Собрать шкаф-купе</h2>
-        <p>Хамовники, сегодня вечером. Инструкция есть, нужен свой инструмент</p>
-        <span class="glass__price">от 3 500 ₽</span>
-      </article>
+  <!-- БОЛЬШАЯ КАРТИНКА: assets/hero.jpg -->
+  <div class="hero__right reveal">
+    <figure class="frame frame--hero">
+      <span class="frame__img" style="--img:url('assets/hero.jpg')"></span>
+      <figcaption class="sr-only">Исполнитель tasko за работой</figcaption>
 
-      <span class="glass glass--pill glass--a"><i aria-hidden="true"></i>7 откликов за 12 минут</span>
-      <span class="glass glass--pill glass--b"><i aria-hidden="true"></i>Оплата после проверки</span>
-    </div>
+      <span class="sticker sticker--star" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><path d="M50 2l11 30 32-8-20 26 20 26-32-8-11 30-11-30-32 8 20-26L7 24l32 8z"/></svg>
+        <b>15<i>мин</i></b>
+      </span>
+
+      <span class="bubble bubble--a">7 откликов за 12 минут</span>
+    </figure>
+
+    <article class="tasknote">
+      <span class="tasknote__label">Новая задача · 10:24</span>
+      <h2>Собрать шкаф-купе</h2>
+      <p>Хамовники, сегодня вечером. Инструкция есть, нужен свой инструмент</p>
+      <span class="tasknote__price">от 3 500 ₽</span>
+    </article>
   </div>
 </section>
 
 <!-- ================= БЕГУЩАЯ СТРОКА ================= -->
-<div class="marquee" aria-hidden="true">
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee">
   <div class="marquee__track">
-    <span>мастер на час</span><i></i><span>клининг</span><i></i><span>Telegram-боты</span><i></i>
-    <span>курьер</span><i></i><span>сантехника</span><i></i><span>сборка мебели</span><i></i>
-    <span>ремонт техники</span><i></i><span>электрика</span><i></i><span>дизайн</span><i></i>
-    <span>перевозки</span><i></i><span>репетиторы</span><i></i><span>фотосъёмка</span><i></i>
-    <span>мастер на час</span><i></i><span>клининг</span><i></i><span>Telegram-боты</span><i></i>
-    <span>курьер</span><i></i><span>сантехника</span><i></i><span>сборка мебели</span><i></i>
-    <span>ремонт техники</span><i></i><span>электрика</span><i></i><span>дизайн</span><i></i>
-    <span>перевозки</span><i></i><span>репетиторы</span><i></i><span>фотосъёмка</span><i></i>
+    <span>мастер на час</span><i>★</i><span>клининг</span><i>★</i><span>Telegram-боты</span><i>★</i>
+    <span>курьер</span><i>★</i><span>сантехника</span><i>★</i><span>сборка мебели</span><i>★</i>
+    <span>ремонт техники</span><i>★</i><span>электрика</span><i>★</i><span>дизайн</span><i>★</i>
+    <span>перевозки</span><i>★</i><span>репетиторы</span><i>★</i><span>фотосъёмка</span><i>★</i>
+    <span>мастер на час</span><i>★</i><span>клининг</span><i>★</i><span>Telegram-боты</span><i>★</i>
+    <span>курьер</span><i>★</i><span>сантехника</span><i>★</i><span>сборка мебели</span><i>★</i>
+    <span>ремонт техники</span><i>★</i><span>электрика</span><i>★</i><span>дизайн</span><i>★</i>
+    <span>перевозки</span><i>★</i><span>репетиторы</span><i>★</i><span>фотосъёмка</span><i>★</i>
+    </div>
   </div>
 </div>
 
@@ -127,17 +137,17 @@
 
     <ol class="steps">
       <li class="step reveal">
-        <span class="step__num">01</span>
+        <span class="step__num">1</span>
         <h3>Опишите задачу</h3>
         <p>Пары предложений достаточно. Можно добавить фото, срок и удобное время — так отклики будут точнее.</p>
       </li>
       <li class="step reveal">
-        <span class="step__num">02</span>
+        <span class="step__num">2</span>
         <h3>Выберите исполнителя</h3>
         <p>Смотрите рейтинг, отзывы и цену. Задавайте вопросы в чате и соглашайтесь, когда всё устроит.</p>
       </li>
       <li class="step reveal">
-        <span class="step__num">03</span>
+        <span class="step__num">3</span>
         <h3>Примите работу</h3>
         <p>Деньги ждут на защищённом счёте и уходят исполнителю только после того, как вы приняли результат.</p>
       </li>
@@ -145,7 +155,7 @@
   </div>
 </section>
 
-<!-- ================= НАПРАВЛЕНИЯ ================= -->
+<!-- ================= НАПРАВЛЕНИЯ (4 КВАДРАТА) ================= -->
 <section class="section services" id="services">
   <div class="container">
     <header class="section__head section__head--row reveal">
@@ -157,43 +167,58 @@
     </header>
 
     <div class="tiles">
+      <!-- КАРТИНКА 1: assets/cat-1.jpg -->
       <a class="tile reveal" href="#hero-form">
-        <span class="tile__img" style="--img:url('assets/cat-1.jpg')"></span>
+        <span class="frame frame--tile">
+          <span class="frame__img" style="--img:url('assets/cat-1.jpg')"></span>
+          <span class="tile__go" aria-hidden="true">↗</span>
+        </span>
         <span class="tile__body">
           <b>Ремонт и быт</b>
           <span>Мастер на час, сантехника, электрика, мебель</span>
         </span>
-        <span class="tile__go" aria-hidden="true">↗</span>
       </a>
-      <a class="tile tile--drop reveal" href="#hero-form">
-        <span class="tile__img" style="--img:url('assets/cat-2.jpg')"></span>
+
+      <!-- КАРТИНКА 2: assets/cat-2.jpg -->
+      <a class="tile reveal" href="#hero-form">
+        <span class="frame frame--tile">
+          <span class="frame__img" style="--img:url('assets/cat-2.jpg')"></span>
+          <span class="tile__go" aria-hidden="true">↗</span>
+        </span>
         <span class="tile__body">
           <b>Курьерские задачи</b>
           <span>Отвезти документы, забрать заказ, купить</span>
         </span>
-        <span class="tile__go" aria-hidden="true">↗</span>
       </a>
+
+      <!-- КАРТИНКА 3: assets/cat-3.jpg -->
       <a class="tile reveal" href="#hero-form">
-        <span class="tile__img" style="--img:url('assets/cat-3.jpg')"></span>
+        <span class="frame frame--tile">
+          <span class="frame__img" style="--img:url('assets/cat-3.jpg')"></span>
+          <span class="tile__go" aria-hidden="true">↗</span>
+        </span>
         <span class="tile__body">
           <b>IT и разработка</b>
           <span>Боты, сайты, автоматизация, настройка сервисов</span>
         </span>
-        <span class="tile__go" aria-hidden="true">↗</span>
       </a>
-      <a class="tile tile--drop reveal" href="#hero-form">
-        <span class="tile__img" style="--img:url('assets/cat-4.jpg')"></span>
+
+      <!-- КАРТИНКА 4: assets/cat-4.jpg -->
+      <a class="tile reveal" href="#hero-form">
+        <span class="frame frame--tile">
+          <span class="frame__img" style="--img:url('assets/cat-4.jpg')"></span>
+          <span class="tile__go" aria-hidden="true">↗</span>
+        </span>
         <span class="tile__body">
           <b>Уборка и клининг</b>
           <span>Генеральная, после ремонта, окна, химчистка</span>
         </span>
-        <span class="tile__go" aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ================= АКТУАЛЬНЫЕ ЗАДАЧИ ================= -->
+<!-- ================= ЛЕНТА ЗАДАЧ ================= -->
 <section class="section tasks" id="tasks">
   <div class="container">
     <header class="section__head section__head--row reveal">
@@ -206,10 +231,7 @@
 
     <div class="feed">
       <article class="req reveal">
-        <div class="req__top">
-          <span class="req__time">15 минут назад</span>
-          <span class="req__price">3 500 ₽</span>
-        </div>
+        <div class="req__top"><span class="req__time">15 минут назад</span><span class="req__price">3 500 ₽</span></div>
         <h3>Собрать шкаф-купе</h3>
         <p>Шкаф 2,4 м, инструкция есть. Нужен мастер со своим инструментом на вечер</p>
         <div class="req__tags"><span>Хамовники</span><span>сегодня</span></div>
@@ -217,10 +239,8 @@
       </article>
 
       <article class="req req--hot reveal">
-        <div class="req__top">
-          <span class="req__time">32 минуты назад</span>
-          <span class="req__price">от 25 000 ₽</span>
-        </div>
+        <span class="req__flag">Горячая</span>
+        <div class="req__top"><span class="req__time">32 минуты назад</span><span class="req__price">от 25 000 ₽</span></div>
         <h3>Telegram-бот для записи</h3>
         <p>Запись клиентов в салон, напоминания и выгрузка в таблицу. Есть готовое ТЗ</p>
         <div class="req__tags"><span>удалённо</span><span>4 отклика</span></div>
@@ -228,10 +248,7 @@
       </article>
 
       <article class="req reveal">
-        <div class="req__top">
-          <span class="req__time">час назад</span>
-          <span class="req__price">2 200 ₽</span>
-        </div>
+        <div class="req__top"><span class="req__time">час назад</span><span class="req__price">2 200 ₽</span></div>
         <h3>Починить стиральную машину</h3>
         <p>Не сливает воду, гудит при отжиме. Bosch, куплена четыре года назад</p>
         <div class="req__tags"><span>срочно</span><span>на дому</span></div>
@@ -239,10 +256,7 @@
       </article>
 
       <article class="req reveal">
-        <div class="req__top">
-          <span class="req__time">два часа назад</span>
-          <span class="req__price">1 400 ₽</span>
-        </div>
+        <div class="req__top"><span class="req__time">два часа назад</span><span class="req__price">1 400 ₽</span></div>
         <h3>Отвезти документы</h3>
         <p>Забрать папку в Сити и отвезти на Пресню до 18:00. Ничего тяжёлого</p>
         <div class="req__tags"><span>курьер</span><span>сегодня</span></div>
@@ -288,7 +302,7 @@
       </blockquote>
 
       <blockquote class="quote reveal">
-        <p>Никогда никого не вызывала домой, было страшно. Мастер приехал через два часа, всё объяснил и ни разу не дал почувствовать себя глупой.</p>
+        <p>Никогда никого не вызывала домой, было страшно. Мастер приехал через два часа и ни разу не дал почувствовать себя глупой.</p>
         <footer>
           <span class="ava" style="--img:url('assets/rev-3.jpg')" aria-hidden="true"></span>
           <span><b>Анна</b>Екатеринбург · ремонт техники</span>
@@ -321,10 +335,8 @@
       </article>
 
       <article class="plan plan--pop reveal">
-        <div class="plan__top">
-          <h3>Профессиональный</h3>
-          <span class="plan__badge">Популярный</span>
-        </div>
+        <span class="plan__badge">Популярный</span>
+        <h3>Профессиональный</h3>
         <div class="plan__price"><b>1 190</b><span>₽ / мес</span></div>
         <p class="plan__for">Для тех, кто закрывает задачи постоянно и ценит скорость</p>
         <a class="btn btn--accent plan__btn" href="#hero-form">Начать</a>
@@ -413,18 +425,20 @@
 
 <!-- ================= ПРИЗЫВ ================= -->
 <section class="cta" id="contacts">
-  <div class="container cta__inner">
-    <div class="cta__text reveal">
-      <h2>Есть задача?<br>Давайте закроем её сегодня</h2>
-      <p>Опишите, что нужно, — первые отклики придут, пока вы допиваете кофе</p>
-      <a class="btn btn--accent btn--lg" href="#hero-form">Разместить задачу</a>
-    </div>
+  <div class="container">
+    <div class="cta__inner reveal">
+      <div class="cta__text">
+        <h2>Есть задача?<br>Давайте закроем её сегодня</h2>
+        <p>Опишите, что нужно, — первые отклики придут, пока вы допиваете кофе</p>
+        <a class="btn btn--ink btn--lg" href="#hero-form">Разместить задачу</a>
+      </div>
 
-    <div class="cta__card reveal">
-      <span class="ava ava--lg" style="--img:url('assets/founder.jpg')" aria-hidden="true"></span>
-      <p>«Я сделал tasko, потому что никто не должен тратить выходные на то, что кто-то сделает за час»</p>
-      <b>Михаил Йохансен</b>
-      <span>Основатель tasko</span>
+      <div class="cta__card">
+        <span class="ava ava--lg" style="--img:url('assets/founder.jpg')" aria-hidden="true"></span>
+        <p>«Я сделал tasko, потому что никто не должен тратить выходные на то, что кто-то сделает за час»</p>
+        <b>Михаил Йохансен</b>
+        <span>Основатель tasko</span>
+      </div>
     </div>
   </div>
 </section>
