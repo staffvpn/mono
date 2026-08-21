@@ -283,7 +283,7 @@ button,input{font:inherit;color:inherit}
   background:#fff;font-size:14px;font-weight:700;white-space:nowrap;
   box-shadow:4px 4px 0 var(--ink);
 }
-.bubble--a{right:-4%;top:16%;transform:rotate(3deg)}
+.bubble--a{--tilt:3deg;right:-4%;top:16%;animation:bob 5.4s ease-in-out infinite;animation-delay:-2.6s}
 
 .tasknote{
   position:relative;z-index:4;margin-top:-46px;align-self:flex-start;
@@ -446,8 +446,20 @@ button,input{font:inherit;color:inherit}
 }
 .quote p::before{bottom:-20px;border-top:20px solid var(--ink)}
 .quote p::after{bottom:-15px;border-top:20px solid var(--paper-2)}
-.quote:nth-child(2) p{transform:rotate(-1deg)}
-.quote:nth-child(3) p{transform:rotate(1deg)}
+/* облака покачиваются: наклон у каждого свой, фазы разведены
+   отрицательной задержкой — стартуют из разных точек цикла */
+.quote p{
+  --tilt:-.6deg;
+  animation:bob 6s ease-in-out infinite;
+  will-change:transform;
+}
+.quote:nth-child(2) p{--tilt:1deg;animation-duration:7.2s;animation-delay:-1.8s}
+.quote:nth-child(3) p{--tilt:-1deg;animation-duration:6.6s;animation-delay:-3.4s}
+
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(var(--tilt));box-shadow:var(--sh)}
+  50%{transform:translateY(-11px) rotate(calc(var(--tilt) + .9deg));box-shadow:7px 10px 0 var(--ink)}
+}
 .quote footer{display:flex;align-items:center;gap:13px;padding-left:8px}
 .quote footer span{display:flex;flex-direction:column;font-size:13.5px;color:var(--ink-45);line-height:1.35;font-weight:500}
 .quote footer b{font-size:16px;font-weight:700;color:var(--ink)}
@@ -614,7 +626,7 @@ button,input{font:inherit;color:inherit}
   .step:nth-child(2),.step:nth-child(3){transform:none}
   .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
   .quotes{grid-template-columns:1fr;gap:30px}
-  .quote:nth-child(2) p,.quote:nth-child(3) p{transform:none}
+  .quote p,.quote:nth-child(2) p,.quote:nth-child(3) p{--tilt:0deg}
   .plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
   .plan--pop{order:-1;margin-top:12px}
   .plan__for{min-height:0}
