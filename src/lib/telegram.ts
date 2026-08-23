@@ -79,9 +79,11 @@ export function initMiniApp(): boolean {
   return true;
 }
 
+/** Тема у приложения одна — песочная, поэтому цвет Telegram подгоняем под неё,
+ *  а не наоборот: иначе шапка мессенджера не совпадает с фоном страницы. */
 function applyTheme(w: TgWebApp) {
-  document.documentElement.setAttribute('data-theme', w.colorScheme === 'dark' ? 'dark' : 'light');
-  const bg = w.colorScheme === 'dark' ? '#14131a' : '#FFF8F0';
+  document.documentElement.setAttribute('data-theme', 'light');
+  const bg = '#E4CFBE';
   try { w.setHeaderColor?.(bg); w.setBackgroundColor?.(bg); } catch { /* пусто */ }
 }
 

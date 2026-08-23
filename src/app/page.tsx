@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SiteHeader, SiteFooter, Section } from '@/components/site/Chrome';
 import { Button, Card, Badge } from '@/components/ui';
 import {
@@ -78,16 +79,36 @@ export default function LandingPage() {
               <p className="mt-4 text-sm text-faint">Роль можно поменять в любой момент — аккаунт один.</p>
             </div>
 
-            <Card className="relative rotate-1 p-7 shadow-pop-lg">
-              <div className="absolute -right-1 -top-5 rotate-6 sm:-right-4">
+            <figure className="relative m-0 rotate-1">
+              <div className="absolute -right-1 -top-5 z-10 rotate-6 sm:-right-4">
                 <Badge tone="brand">Новое</Badge>
               </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">Мы зарабатываем, когда вы зарабатываете</h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                Никаких платных откликов и подписок ради того, чтобы вас увидели.
-                Платформа берёт комиссию только с успешной сделки — и показывает её до оплаты.
-              </p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="overflow-hidden rounded-xl border-3 border-ink bg-card shadow-pop-lg">
+                <Image
+                  src="/hero.webp"
+                  alt="Команда, которая берётся за дела: кто-то с картой, кто-то с коробками, кто-то с камерой"
+                  width={1200}
+                  height={1200}
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="block h-auto w-full"
+                />
+              </div>
+            </figure>
+          </div>
+
+          {/* Обещание про комиссию не выкидываем — оно переехало под первый экран
+              отдельной полосой, чтобы картинка занимала весь правый блок. */}
+          <div className="mt-12 rounded-xl border-3 border-ink bg-card p-6 shadow-pop sm:p-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
+              <div className="lg:max-w-[38ch]">
+                <h2 className="text-2xl font-extrabold tracking-tight">Мы зарабатываем, когда вы зарабатываете</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted">
+                  Никаких платных откликов и подписок ради того, чтобы вас увидели.
+                  Комиссия берётся только с успешной сделки — и видна до оплаты.
+                </p>
+              </div>
+              <div className="grid flex-1 gap-3 sm:grid-cols-2">
                 {['Создать задачу', 'Найти задачи', 'Откликнуться', 'Переписка'].map((x) => (
                   <div key={x} className="flex items-center gap-2.5 rounded-md border-2 border-ink bg-surface px-3 py-2.5 text-sm font-bold">
                     <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-ink bg-brand text-[10px] text-white">₽</span>
@@ -96,7 +117,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           </div>
         </Section>
 
