@@ -73,3 +73,20 @@ export async function POST(req: Request) {
   res.cookies.set(SESSION_COOKIE, session, cookieOptions());
   return res;
 }
+
+/**
+ * GET /api/auth/telegram — самопроверка настройки.
+ * Отдаёт только «задано / не задано»: ни токен, ни секрет наружу не уходят.
+ */
+export async function GET() {
+  const token = botToken();
+  const secret = sessionSecretConfigured();
+  return NextResponse.json({
+    ok: Boolean(token) && secret,
+    botToken: token ? 'задан' : 'НЕ ЗАДАН',
+    sessionSecret: secret ? 'задан' : 'НЕ ЗАДАН',
+    hint: token && secret
+      ? 'Всё готово: можно указывать домен в @BotFather и проверять вход.'
+      : 'Добавьте недостающие переменные в настройках хостинга и передеплойте проект.',
+  });
+}
