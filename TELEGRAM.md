@@ -53,10 +53,13 @@ TASKO.config = {
 
 ## 3. Проверка подписи — уже написана
 
-Функция лежит в **`api/auth.js`** и деплоится на Vercel как есть.
+Функция лежит в **`src/app/api/auth/telegram/route.ts`** — это route handler Next.js
+с `runtime = 'nodejs'` (нужен `node:crypto`). Логика проверки вынесена в
+`src/server/telegram.ts`, выдача сессии — в `src/server/session.ts`.
 Она проверяет оба сценария — `initData` у Mini App и ответ веб-виджета, —
 сравнивает подпись в постоянном времени и отбраковывает данные старше суток.
-`telegram.js` уже указывает на неё: `verifyUrl: '/api/auth'`.
+Клиент обращается к ней по адресу `POST /api/auth/telegram`
+с телом `{ source: 'miniapp' | 'widget', payload }`.
 
 Осталось задать токен:
 
@@ -113,7 +116,9 @@ TASKO.config = {
 1. ~~Имя бота~~ — `teydobot`, уже вписан в `telegram.js`.
 2. **`/setdomain`** в @BotFather → домен сайта. Без этого веб-виджет молчит.
 3. **`BOT_TOKEN`** в переменных окружения Vercel — см. раздел ниже.
-4. Задеплоить — `api/auth.js` подхватится автоматически.
+4. Задеплоить — маршруты `/api/auth/*` собираются вместе с приложением.
+5. Дополнительно задать `SESSION_SECRET` (`openssl rand -hex 32`) — без него
+   вход не выдаст сессию и вернёт 503.
 
 До этого работает демо-режим, профиль честно помечен как демонстрационный.
 
@@ -175,7 +180,7 @@ TASKO.config = {
 ## Шаг 4. Проверка
 
 Откройте на задеплоенном сайте **`/diag.html`** — страница сама проверит
-адрес, функцию `/api/auth`, виджет Telegram, режим Mini App и сохранённый
+адрес, маршрут `/api/auth/telegram`, виджет Telegram, режим Mini App и сохранённый
 профиль, и для каждой проблемы напишет, что чинить.
 
 Дальше — вручную:
@@ -191,13 +196,14 @@ TASKO.config = {
 Проверить саму функцию можно напрямую:
 
 ```bash
-curl -X POST https://ваш-адрес.vercel.app/api/auth \
+curl -X POST https://ваш-адрес.vercel.app/api/auth/telegram \
   -H 'Content-Type: application/json' \
   -d '{"source":"widget","payload":{"id":1,"hash":"нет"}}'
 ```
 
 - `{"error":"bad_signature"}` — функция работает, токен на месте.
 - `{"error":"bot_token_not_configured"}` — переменная не задана или не было передеплоя.
+- `{"error":"session_secret_not_configured"}` — не задан `SESSION_SECRET`.
 
 ## Шаг 5. Mini App
 

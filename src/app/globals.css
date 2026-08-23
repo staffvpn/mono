@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Токены дизайн-системы TEYDO
+   Светлая тема — базовая, тёмная переопределяет только значения.
+   ============================================================ */
+:root{
+  --c-paper:255 248 240;
+  --c-surface:253 239 225;
+  --c-card:255 255 255;
+  --c-ink:14 14 24;
+  --c-muted:74 71 83;
+  --c-faint:126 122 136;
+  --c-line:14 14 24;
+  --c-brand:242 93 25;
+  --c-brand-soft:255 122 61;
+  --c-sand:228 207 190;
+  --c-ok:46 125 79;
+  --c-warn:200 138 22;
+  --c-danger:196 52 28;
+
+  --font-sans:'Onest';
+  --tg-top:0px;
+  --tg-bottom:0px;
+}
+
+:root[data-theme="dark"]{
+  --c-paper:20 19 26;
+  --c-surface:31 29 39;
+  --c-card:31 29 39;
+  --c-ink:245 240 234;
+  --c-muted:186 181 196;
+  --c-faint:143 138 155;
+  --c-line:88 83 102;
+  --c-sand:74 66 60;
+  --c-ok:98 197 143;
+  --c-warn:233 187 93;
+  --c-danger:240 128 105;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --c-paper:20 19 26;
+    --c-surface:31 29 39;
+    --c-card:31 29 39;
+    --c-ink:245 240 234;
+    --c-muted:186 181 196;
+    --c-faint:143 138 155;
+    --c-line:88 83 102;
+    --c-sand:74 66 60;
+    --c-ok:98 197 143;
+    --c-warn:233 187 93;
+    --c-danger:240 128 105;
+  }
+}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  background:rgb(var(--c-paper));
+  color:rgb(var(--c-ink));
+  font-weight:500;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* цель нажатия не меньше 44px там, где это важно */
+button,a[role="button"]{touch-action:manipulation}
+
+::selection{background:rgb(var(--c-brand));color:#fff}
+
+*:focus-visible{
+  outline:3px solid rgb(var(--c-brand));
+  outline-offset:2px;
+  border-radius:8px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+
+/* скрываем полосу прокрутки у горизонтальных лент фильтров */
+.no-bar{scrollbar-width:none;-ms-overflow-style:none}
+.no-bar::-webkit-scrollbar{display:none}

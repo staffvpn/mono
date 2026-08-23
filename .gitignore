@@ -1,9 +1,10 @@
 node_modules/
+.next/
 .vercel
 .DS_Store
 *.log
-package.json
-package-lock.json
 .env
 .env.*
 !.env.example
+next-env.d.ts
+*.tsbuildinfo
