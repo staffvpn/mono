@@ -90,8 +90,9 @@ export default function LandingPage() {
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {['Создать задачу', 'Найти задачи', 'Откликнуться', 'Переписка'].map((x) => (
                   <div key={x} className="flex items-center gap-2.5 rounded-md border-2 border-ink bg-surface px-3 py-2.5 text-sm font-bold">
-                    <span className="grid h-5 w-5 place-items-center rounded-full border-2 border-ink bg-brand text-[10px] text-white">₽</span>
-                    {x} — 0 ₽
+                    <span aria-hidden className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-ink bg-brand text-[10px] text-white">₽</span>
+                    <span className="min-w-0 truncate">{x}</span>
+                    <span className="ml-auto shrink-0 whitespace-nowrap text-brand">0 ₽</span>
                   </div>
                 ))}
               </div>
