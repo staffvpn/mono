@@ -14,7 +14,7 @@
 
 | Слой | Что используется |
 |---|---|
-| Фреймворк | Next.js 15 (App Router), React 19 |
+| Фреймворк | Next.js 16 (App Router), React 19 |
 | Язык | TypeScript 5.7, strict |
 | Стили | Tailwind CSS 3.4 + CSS-переменные для токенов темы |
 | Данные | слой сервисов; сейчас за ним мок-хранилище в `localStorage` |
@@ -38,10 +38,9 @@ npm run dev               # http://localhost:3000
 npm run build       # production-сборка
 npm run start       # запуск собранного приложения
 npm run typecheck   # tsc --noEmit
-npm run lint        # next lint
 ```
 
-Node.js 18.18+ (рекомендуется 20+).
+Node.js 20.9+ (на Vercel сейчас 24.x).
 
 ---
 

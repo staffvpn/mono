@@ -79,7 +79,7 @@ export default function LandingPage() {
             </div>
 
             <Card className="relative rotate-1 p-7 shadow-pop-lg">
-              <div className="absolute -right-4 -top-5 rotate-6">
+              <div className="absolute -right-1 -top-5 rotate-6 sm:-right-4">
                 <Badge tone="brand">Новое</Badge>
               </div>
               <h2 className="text-2xl font-extrabold tracking-tight">Мы зарабатываем, когда вы зарабатываете</h2>
