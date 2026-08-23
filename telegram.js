@@ -5,9 +5,9 @@
    ------------------------------------------------------------ */
 window.TASKO = window.TASKO || {};
 TASKO.config = {
-  // имя бота без @, например 'tasko_login_bot'.
-  // Пусто → работает демо-режим без реального входа.
-  bot: '',
+  // имя бота без @. Домен сайта должен быть прописан в @BotFather → /setdomain,
+  // иначе Telegram не отрисует кнопку входа.
+  bot: 'teydobot',
   // проверка подписи на сервере: функция лежит в api/auth.js.
   // Работает после деплоя на Vercel с переменной BOT_TOKEN.
   verifyUrl: '/api/auth'
@@ -181,6 +181,17 @@ TASKO.config = {
     box.appendChild(s);
     box.dataset.done = '1';
     btn.hidden = true;      // настоящую кнопку рисует Telegram
+
+    /* Виджет — iframe с сервера Telegram. Он не появится, если домен
+       не прописан в @BotFather или страница открыта не с того адреса.
+       Через три секунды показываем свою кнопку и объясняем, что не так. */
+    setTimeout(function () {
+      if (box.querySelector('iframe')) return;
+      btn.hidden = false;
+      note.textContent =
+        'Кнопка Telegram не загрузилась. Проверьте, что домен сайта прописан ' +
+        'в @BotFather → /setdomain и совпадает с адресом в строке браузера';
+    }, 3000);
   }
 
   /* ---------- Вход ---------- */
@@ -217,7 +228,12 @@ TASKO.config = {
       return;
     }
 
-    if (cfg.bot) return; // ждём колбэк от виджета
+    if (cfg.bot) {
+      // виджет не прогрузился — уводим в Telegram напрямую
+      show('intro');
+      window.open('https://t.me/' + cfg.bot, '_blank', 'noopener');
+      return;
+    }
 
     // демо: бота нет, показываем как это будет выглядеть
     setTimeout(function () {
