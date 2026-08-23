@@ -68,7 +68,9 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const token = process.env.BOT_TOKEN;
+  // При вставке в панель Vercel к токену часто прилипает пробел
+  // или перевод строки — тогда подпись не сойдётся ни при каких данных.
+  const token = (process.env.BOT_TOKEN || '').trim();
   if (!token) {
     res.status(500).json({ error: 'bot_token_not_configured' });
     return;

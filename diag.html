@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tasko — проверка входа</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{--paper:#FFF8F0;--ink:#0E0E18;--orange:#F25D19;--sand:#E4CFBE;--ok:#2E7D4F;--bad:#C4341C}
+  *{box-sizing:border-box}
+  body{margin:0;padding:28px 18px 60px;background:var(--paper);color:var(--ink);
+       font:500 16px/1.5 "Onest",system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.03em;margin:0 0 6px}
+  .sub{color:#6b6875;margin:0 0 26px;font-size:15px}
+  .row{border:3px solid var(--ink);border-radius:18px;padding:16px 18px;margin-bottom:12px;
+       box-shadow:5px 5px 0 var(--ink);background:#fff}
+  .row h2{font-size:17px;font-weight:700;margin:0 0 6px;display:flex;align-items:center;gap:9px}
+  .dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink);flex:none;background:var(--sand)}
+  .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.wait{background:#E8B93C}
+  .row p{margin:0;font-size:14.5px;color:#3f3c49}
+  code{background:var(--sand);padding:2px 7px;border-radius:6px;font-size:13.5px;word-break:break-all}
+  .fix{margin-top:9px;padding:11px 13px;border-radius:12px;background:#FDECE4;
+       border:2px solid var(--orange);font-size:14px}
+  .widget{margin-top:12px;min-height:52px}
+  a{color:var(--orange)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Проверка входа</h1>
+  <p class="sub">Откройте эту страницу на задеплоенном сайте — она скажет, что именно не даёт войти.</p>
+
+  <div class="row">
+    <h2><span class="dot" id="d1"></span>Адрес сайта</h2>
+    <p id="p1">…</p>
+  </div>
+
+  <div class="row">
+    <h2><span class="dot" id="d2"></span>Функция /api/auth</h2>
+    <p id="p2">Проверяю…</p>
+  </div>
+
+  <div class="row">
+    <h2><span class="dot" id="d3"></span>Кнопка входа Telegram</h2>
+    <p id="p3">Загружаю виджет…</p>
+    <div class="widget" id="w"></div>
+  </div>
+
+  <div class="row">
+    <h2><span class="dot" id="d4"></span>Запуск внутри Telegram</h2>
+    <p id="p4">…</p>
+  </div>
+
+  <div class="row">
+    <h2><span class="dot" id="d5"></span>Сохранённый профиль в браузере</h2>
+    <p id="p5">…</p>
+  </div>
+</main>
+
+<script>
+var BOT = 'teydobot';
+function set(n, state, html, fix){
+  document.getElementById('d'+n).className = 'dot ' + state;
+  document.getElementById('p'+n).innerHTML = html + (fix ? '<div class="fix">'+fix+'</div>' : '');
+}
+
+/* 1 — адрес */
+(function(){
+  var host = location.host, https = location.protocol === 'https:';
+  if (!https && !/^localhost|^127\./.test(host)) {
+    set(1,'bad','Сайт открыт по <code>'+location.protocol+'</code>',
+      'Виджет Telegram работает только по https.');
+  } else {
+    set(1,'ok','В @BotFather → <code>/setdomain</code> должно быть записано ровно: <code>'+host+'</code>',
+      'Без протокола, без слэша в конце. Если там другое — вход не заработает.');
+  }
+})();
+
+/* 2 — серверная функция */
+fetch('/api/auth', {
+  method:'POST', headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({source:'widget', payload:{id:1, auth_date:1, hash:'проверка'}})
+}).then(function(r){
+  return r.json().catch(function(){return {};}).then(function(b){ return {s:r.status, b:b}; });
+}).then(function(res){
+  var e = res.b.error;
+  if (e === 'bad_signature')
+    set(2,'ok','Функция отвечает, токен на месте — подпись проверяется.');
+  else if (e === 'bot_token_not_configured')
+    set(2,'bad','Функция есть, но <code>BOT_TOKEN</code> не задан.',
+      'Vercel → Settings → Environment Variables → добавить <code>BOT_TOKEN</code>, затем <b>Deployments → ⋯ → Redeploy</b>. Без передеплоя переменная не подхватится.');
+  else if (res.s === 404)
+    set(2,'bad','Функция не найдена (404).',
+      'Папка <code>api/</code> не попала в деплой. Проверьте Production Branch в Settings → Git.');
+  else
+    set(2,'bad','Неожиданный ответ: <code>'+res.s+' '+(e||JSON.stringify(res.b))+'</code>');
+}).catch(function(err){
+  set(2,'bad','Запрос не прошёл: <code>'+err.message+'</code>','Сайт точно задеплоен и открыт по своему адресу?');
+});
+
+/* 3 — виджет */
+(function(){
+  var box = document.getElementById('w');
+  var s = document.createElement('script');
+  s.src = 'https://telegram.org/js/telegram-widget.js?22';
+  s.async = true;
+  s.setAttribute('data-telegram-login', BOT);
+  s.setAttribute('data-size','large');
+  s.setAttribute('data-onauth','onDiagAuth(user)');
+  s.onerror = function(){
+    set(3,'bad','Скрипт виджета не загрузился.','Блокировщик рекламы или нет доступа к telegram.org.');
+  };
+  box.appendChild(s);
+  setTimeout(function(){
+    if (box.querySelector('iframe'))
+      set(3,'ok','Кнопка отрисовалась — домен в @BotFather совпадает. Нажмите её, чтобы проверить вход целиком.');
+    else
+      set(3,'bad','Кнопка не появилась для бота <code>@'+BOT+'</code>.',
+        'Самая частая причина: в <code>/setdomain</code> записан не тот домен. Должно быть ровно <code>'+location.host+'</code>. Ещё вариант — имя бота в коде отличается от настоящего.');
+  }, 3500);
+})();
+
+function onDiagAuth(user){
+  set(3,'wait','Telegram вернул данные для <b>'+(user.first_name||'')+'</b>. Проверяю подпись на сервере…');
+  fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({source:'widget',payload:user})})
+    .then(function(r){return r.json().catch(function(){return {};}).then(function(b){return {s:r.status,b:b};});})
+    .then(function(res){
+      if (res.b.profile) set(3,'ok','Вход прошёл полностью. Профиль: <b>'+res.b.profile.name+'</b> '+(res.b.profile.tag||''));
+      else set(3,'bad','Сервер отклонил вход: <code>'+(res.b.error||res.s)+'</code>',
+        res.b.error === 'bad_signature' ? 'Токен в Vercel не от этого бота, либо старый, либо с лишним пробелом.' : '');
+    });
+}
+
+/* 4 — Mini App */
+(function(){
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (tg && tg.initData) {
+    var u = tg.initDataUnsafe && tg.initDataUnsafe.user;
+    set(4,'ok','Страница открыта внутри Telegram'+(u ? ', пользователь <b>'+(u.first_name||'')+'</b>' : '')+
+      '. Версия Bot API: <code>'+(tg.version||'?')+'</code>, полноэкранный режим: <code>'+
+      (typeof tg.requestFullscreen === 'function' ? 'поддерживается' : 'нет, клиент старый')+'</code>');
+  } else {
+    set(4,'wait','Открыто в обычном браузере — это нормально. Чтобы проверить Mini App, откройте сайт кнопкой в чате бота.');
+  }
+})();
+
+/* 5 — локальный профиль */
+(function(){
+  var raw = null;
+  try { raw = localStorage.getItem('tasko.profile'); } catch(e){}
+  if (!raw) { set(5,'ok','Пусто — сайт считает вас гостем, окно входа откроется как надо.'); return; }
+  var p = {}; try { p = JSON.parse(raw); } catch(e){}
+  if (p.demo)
+    set(5,'bad','В браузере лежит <b>демо-профиль</b> из ранних тестов: '+(p.name||'')+'.',
+      'Он подменял собой настоящий вход. Свежий код чистит его сам, но если хочется сразу — нажмите «Выйти» в профиле или очистите данные сайта.');
+  else
+    set(5,'ok','Сохранён настоящий профиль: <b>'+(p.name||'')+'</b> '+(p.tag||''));
+})();
+</script>
+</body>
+</html>

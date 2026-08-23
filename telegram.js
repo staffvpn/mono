@@ -254,13 +254,34 @@ TASKO.config = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: data.source, payload: data.payload })
     })
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (body) {
+          if (!r.ok) throw new Error(body.error || ('http_' + r.status));
+          return body;
+        });
+      })
       .then(function (res) { finish(Object.assign({}, data.profile, res.profile || {})); })
-      .catch(function () {
+      .catch(function (err) {
         var note = modal.querySelector('[data-auth-note]');
         show('intro');
-        if (note) note.textContent = 'Не получилось подтвердить вход. Попробуйте ещё раз';
+        if (note) note.textContent = explain(String(err.message || err));
       });
+  }
+
+  /* Общая фраза «попробуйте ещё раз» не даёт понять, что чинить,
+     поэтому переводим код с сервера в конкретное действие. */
+  function explain(code) {
+    if (code === 'bot_token_not_configured')
+      return 'На сервере не задан BOT_TOKEN. Vercel → Settings → Environment Variables, потом Redeploy';
+    if (code === 'bad_signature')
+      return 'Подпись не сошлась. Обычно это старый или обрезанный BOT_TOKEN в настройках Vercel';
+    if (code === 'http_404')
+      return 'Функция /api/auth не найдена. Проверьте, что папка api попала в деплой';
+    if (code === 'http_405')
+      return 'Функция отвечает не на POST — проверьте адрес verifyUrl';
+    if (/Failed to fetch|NetworkError/i.test(code))
+      return 'Сервер не ответил. Сайт открыт по https и задеплоен?';
+    return 'Вход не прошёл: ' + code;
   }
 
   function finish(profile) {
@@ -329,7 +350,15 @@ TASKO.config = {
   function readProfile() {
     try {
       var raw = localStorage.getItem(STORE);
-      return raw ? JSON.parse(raw) : null;
+      var p = raw ? JSON.parse(raw) : null;
+      /* Демо-профиль из тестов пережил бы подключение бота и подменял бы
+         собой настоящий вход: окно открывалось бы сразу на профиле,
+         кнопки Telegram человек бы не увидел. Чистим его. */
+      if (p && p.demo && cfg.bot && cfg.verifyUrl) {
+        localStorage.removeItem(STORE);
+        return null;
+      }
+      return p;
     } catch (e) { return null; }
   }
 
