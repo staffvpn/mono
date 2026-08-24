@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
 import { Reveal } from '@/components/site/motion';
+import { Accordion } from '@/components/site/Accordion';
 import { Button, Card } from '@/components/ui';
 import { BRAND } from '@/lib/brand';
 import { COMMISSION_PERCENT } from '@/lib/pricing';
@@ -98,16 +99,8 @@ export default function HelpPage() {
 
         {GROUPS.map((g, gi) => (
           <Section key={g.title} eyebrow={gi === 0 ? 'Вопросы и ответы' : undefined} title={g.title} className="!pt-0">
-            <div className="grid gap-3 lg:grid-cols-2">
-              {g.items.map((f) => (
-                <details key={f.q} className="group rounded-lg border-3 border-ink bg-card p-5 shadow-pop-sm open:bg-surface">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-bold">
-                    {f.q}
-                    <span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-ink text-sm transition-transform group-open:rotate-45">+</span>
-                  </summary>
-                  <p className="mt-3 border-t-2 border-ink/10 pt-3 text-[15px] leading-relaxed text-muted">{f.a}</p>
-                </details>
-              ))}
+            <div className="max-w-[820px]">
+              <Accordion items={g.items} />
             </div>
           </Section>
         ))}

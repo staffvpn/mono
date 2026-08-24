@@ -195,7 +195,7 @@ export default function LandingPage() {
         {/* ---------- Вопросы ---------- */}
         <Section id="faq" eyebrow="Вопросы" title="Коротко о главном" className="!pb-24 !pt-0">
           <div className="mx-auto max-w-[820px]">
-            <Accordion items={FAQ} />
+            <Accordion items={FAQ} defaultOpen={0} />
           </div>
         </Section>
       </main>

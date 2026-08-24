@@ -7,8 +7,12 @@ import { cx } from '@/components/ui';
  * Вопрос-ответ с плавным раскрытием.
  * Нативный <details> высоту не анимирует, поэтому раскрываем сеткой 0fr→1fr.
  */
-export function Accordion({ items }: { items: { q: string; a: string }[] }) {
-  const [open, setOpen] = useState<number | null>(0);
+export function Accordion({ items, defaultOpen = null }: {
+  items: { q: string; a: string }[];
+  /** Индекс раскрытого вопроса при загрузке. null — все закрыты. */
+  defaultOpen?: number | null;
+}) {
+  const [open, setOpen] = useState<number | null>(defaultOpen);
   const base = useId();
 
   return (
