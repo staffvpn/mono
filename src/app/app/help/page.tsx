@@ -67,7 +67,7 @@ export default function HelpPage() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
       <div className="flex items-center gap-4">
-        <ArtSupport className="h-20 w-20 shrink-0" />
+        <ArtSupport className="h-20 w-auto shrink-0" />
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">{isReport ? 'Пожаловаться' : 'Что случилось?'}</h1>
           <p className="mt-1 text-[15px] text-muted">

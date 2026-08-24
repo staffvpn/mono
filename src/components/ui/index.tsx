@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
+import { ArtEmpty, ArtError } from './art';
 
 /* ============================================================
    Дизайн-система TEYDO.
@@ -221,7 +222,9 @@ export function EmptyState({ title, text, action, art }: {
 }) {
   return (
     <div className="flex flex-col items-center gap-4 rounded-xl border-3 border-dashed border-ink/40 px-6 py-12 text-center">
-      {art}
+      {/* Своя иллюстрация перебивает общую: у пустого поиска и пустого списка
+          заказов разный смысл, и картинка должна это отражать. */}
+      {art ?? <ArtEmpty className="h-40 w-auto" />}
       <div>
         <h3 className="text-xl font-bold tracking-tight">{title}</h3>
         {text && <p className="mx-auto mt-2 max-w-[42ch] text-[15px] text-muted">{text}</p>}
@@ -236,7 +239,8 @@ export function ErrorState({ title = 'Что-то пошло не так', text 
 }) {
   return (
     <div className="flex flex-col items-center gap-4 rounded-xl border-3 border-danger bg-danger/10 px-6 py-10 text-center">
-      <h3 className="text-xl font-bold tracking-tight">{title}</h3>
+      <ArtError className="h-36 w-auto" />
+      <h3 className="text-xl font-extrabold tracking-tight">{title}</h3>
       <p className="max-w-[42ch] text-[15px] text-muted">{text}</p>
       {action}
     </div>

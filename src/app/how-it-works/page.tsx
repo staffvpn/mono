@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
 import { Button, Card, Badge } from '@/components/ui';
 import {
-  ArtSearching, ArtReply, ArtDeal, ArtWork, ArtDone, ArtMoney,
+  ArtSearching, ArtReply, ArtDeal, ArtDone, ArtMoney, ArtSupport,
 } from '@/components/ui/art';
+import { Reveal, Sparkle } from '@/components/site/motion';
 
 export const metadata: Metadata = {
   title: 'Как это работает — TEYDO',
@@ -12,21 +13,17 @@ export const metadata: Metadata = {
 };
 
 const CUSTOMER = [
-  { t: 'Опишите задачу словами', d: 'Пишите как есть: «завтра к 18:00 собрать шкаф на Ленина 5, тысячи три». Мы разложим это на категорию, дату, время, адрес и бюджет и покажем на подтверждение — поля можно поправить вручную.', art: <ArtSearching /> },
-  { t: 'Не знаете цену — не выдумывайте', d: 'Поставьте «цена договорная»: мы покажем ориентир по похожим задачам в вашем городе и предложим исполнителям назвать свою.', art: <ArtMoney /> },
-  { t: 'Получите подходящих людей', d: 'Вместо ленты из сотен объявлений — исполнители, у которых совпала категория, район и цена. Рядом с каждым написано, почему он подходит.', art: <ArtReply /> },
-  { t: 'Задайте вопросы в чате', d: 'Чат открывается после отклика. Уточните детали, попросите фото прошлых работ, договоритесь о времени.', art: <ArtDeal /> },
-  { t: 'Зафиксируйте условия', d: 'Что, за сколько, когда и где. Условия становятся действующими только когда их подтвердили обе стороны. Любое изменение — новое согласие.', art: <ArtWork /> },
-  { t: 'Примите работу и оплатите', d: 'Деньги резервируются заранее и уходят исполнителю после того, как вы приняли результат. Не приняли — открывается спор, средства удерживаются.', art: <ArtDone /> },
+  { t: 'Опишите задачу', d: 'Обычными словами: «завтра к шести собрать шкаф на Ленина 5, тысячи три». Мы разложим это на категорию, дату, адрес и бюджет — вы только подтвердите.', art: <ArtSearching /> },
+  { t: 'Выберите из откликов', d: 'Вместо ленты из сотен объявлений — люди, у которых совпала категория, район и цена. Рядом написано, почему совпало.', art: <ArtReply /> },
+  { t: 'Зафиксируйте условия', d: 'Что, за сколько, когда и где. Условия вступают в силу, только когда их подтвердили обе стороны.', art: <ArtDeal /> },
+  { t: 'Примите работу', d: 'Деньги резервируются заранее и уходят исполнителю после того, как вы приняли результат. Не приняли — открывается спор.', art: <ArtDone /> },
 ];
 
 const EXECUTOR = [
-  { t: 'Заполните профиль', d: 'Категории, район работы, ставка, примеры работ. Профиль бесплатный — платных «премиум-аккаунтов ради показов» нет.' },
-  { t: 'Найдите задачи рядом', d: 'Фильтр по расстоянию начинается с 1 км. Рядом с задачей видно совпадение с вашим профилем и почему оно такое.' },
-  { t: 'Откликнитесь бесплатно', d: 'Отклик не стоит ничего — всегда, а не первые три. Напишите цену, срок и короткое сообщение.' },
-  { t: 'Посмотрите на заказчика', d: 'У заказчика тоже есть рейтинг: адекватность, точность описания, пунктуальность, оплата. Вы решаете, идти ли работать.' },
-  { t: 'Согласуйте условия', d: 'Пока обе стороны не подтвердили условия, заказ не стартует. Это защищает от «мы же договаривались по-другому».' },
-  { t: 'Сделайте работу и получите деньги', d: 'Оплата уже зарезервирована. После приёмки она уходит вам за вычетом комиссии платформы, которая видна до старта.' },
+  { t: 'Заполните профиль', d: 'Категории, район, ставка, примеры работ. Бесплатно: платных «премиум-аккаунтов ради показов» здесь нет.', art: <ArtSupport /> },
+  { t: 'Найдите задачи рядом', d: 'Фильтр по расстоянию начинается с одного километра. У каждой задачи видно совпадение с вашим профилем.', art: <ArtSearching /> },
+  { t: 'Откликнитесь', d: 'Отклик не стоит ничего — всегда, а не первые три. Цена, срок и короткое сообщение.', art: <ArtReply /> },
+  { t: 'Сделайте и получите', d: 'Оплата уже зарезервирована. После приёмки она уходит вам за вычетом комиссии, которая видна до старта.', art: <ArtMoney /> },
 ];
 
 const TIMELINE = [
@@ -57,36 +54,44 @@ export default function HowItWorksPage() {
           </div>
         </PageHero>
 
-        <Section eyebrow="Заказчику" title="Шесть шагов, если вам нужно, чтобы дело сделали">
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <Section eyebrow="Заказчику" title="Если нужно, чтобы дело сделали">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {CUSTOMER.map((c, i) => (
-              <Card key={c.t} className={`flex flex-col gap-4 p-6 ${i % 3 === 1 ? '-rotate-1' : i % 3 === 2 ? 'rotate-1' : ''}`}>
-                <div className="opacity-90">{c.art}</div>
-                <div>
-                  <div className="mb-1 text-sm font-bold text-brand">Шаг {i + 1}</div>
-                  <h3 className="text-xl font-extrabold tracking-tight">{c.t}</h3>
+              <Reveal key={c.t}>
+                <Card className={`toon relative h-full overflow-visible p-6 pt-9 ${i % 2 ? 'rotate-1' : '-rotate-1'}`}>
+                  <span className="absolute -left-3 -top-4 grid h-11 w-11 place-items-center rounded-full border-3 border-ink bg-brand text-lg font-extrabold leading-none text-white shadow-pop-sm">
+                    {i + 1}
+                  </span>
+                  <div className="mb-4 grid h-24 place-items-center rounded-lg border-2 border-ink/15 bg-surface">
+                    {c.art}
+                  </div>
+                  <h3 className="text-lg font-extrabold leading-tight tracking-tight">{c.t}</h3>
                   <p className="mt-2 text-[15px] leading-relaxed text-muted">{c.d}</p>
-                </div>
-              </Card>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </Section>
 
-        <Section eyebrow="Исполнителю" title="Шесть шагов, если вы хотите заработать" className="!pt-0">
-          <Card className="bg-brand p-8 text-white sm:p-10">
-            <ol className="grid gap-6 sm:grid-cols-2">
+        <Section eyebrow="Исполнителю" title="Если хотите заработать" className="!pt-0">
+          <Card className="toon relative overflow-hidden bg-brand p-6 sm:p-9">
+            <Sparkle aria-hidden className="pointer-events-none absolute -right-4 -top-4 h-20 w-20 animate-twinkle opacity-70" />
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {EXECUTOR.map((e, i) => (
-                <li key={e.t} className="flex gap-4">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border-3 border-ink bg-white text-base font-extrabold text-ink">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-extrabold tracking-tight">{e.t}</h3>
-                    <p className="mt-1.5 text-[15px] leading-relaxed text-white/85">{e.d}</p>
+                <Reveal key={e.t}>
+                  <div className="toon relative h-full rounded-xl border-3 border-ink bg-card p-6 pt-9 shadow-pop-sm">
+                    <span className="absolute -left-3 -top-4 grid h-11 w-11 place-items-center rounded-full border-3 border-ink bg-ink text-lg font-extrabold leading-none text-paper shadow-pop-sm">
+                      {i + 1}
+                    </span>
+                    <div className="mb-4 grid h-24 place-items-center rounded-lg border-2 border-ink/15 bg-surface">
+                      {e.art}
+                    </div>
+                    <h3 className="text-lg font-extrabold leading-tight tracking-tight">{e.t}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted">{e.d}</p>
                   </div>
-                </li>
+                </Reveal>
               ))}
-            </ol>
+            </div>
           </Card>
         </Section>
 
@@ -100,11 +105,11 @@ export default function HowItWorksPage() {
               <li key={t.s} className="relative">
                 <span
                   aria-hidden
-                  className="absolute -left-[38px] top-3 grid h-6 w-6 place-items-center rounded-full border-3 border-ink bg-brand text-[10px] font-extrabold text-white sm:-left-[46px]"
+                  className="absolute -left-[38px] top-3 grid h-6 w-6 place-items-center rounded-full border-3 border-ink bg-brand text-[10px] font-extrabold leading-none text-white sm:-left-[46px]"
                 >
                   {i + 1}
                 </span>
-                <Card className="p-5">
+                <Card className="toon p-5">
                   <h3 className="text-[17px] font-extrabold tracking-tight">{t.s}</h3>
                   <p className="mt-1 text-[15px] leading-relaxed text-muted">{t.d}</p>
                 </Card>
@@ -123,17 +128,17 @@ export default function HowItWorksPage() {
               { t: 'Не показывает выдуманную статистику', d: 'Если цифры нет — мы пишем «нет данных». Ноль и «нет данных» — разные вещи.' },
               { t: 'Не продаёт места в выдаче', d: 'Порядок выдачи определяется совпадением с задачей, а не оплатой за показы.' },
             ].map((x) => (
-              <Card key={x.t} className="p-6">
+              <Reveal key={x.t}><Card className="toon h-full p-6">
                 <Badge tone="sand" className="mb-3">Важно</Badge>
                 <h3 className="text-lg font-extrabold tracking-tight">{x.t}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{x.d}</p>
-              </Card>
+              </Card></Reveal>
             ))}
           </div>
         </Section>
 
         <Section className="!pb-24 !pt-0">
-          <Card className="bg-ink p-10 text-center text-paper shadow-pop-lg sm:p-14">
+          <Card className="toon bg-ink p-10 text-center text-paper shadow-pop-lg sm:p-14">
             <h2 className="text-balance text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
               Понятно? Тогда попробуйте
             </h2>

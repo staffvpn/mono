@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { BRAND } from '@/lib/brand';
 import { Button, cx } from '@/components/ui';
@@ -16,9 +17,9 @@ const NAV = [
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <Link href="/" className={cx('inline-flex items-end gap-1 text-2xl font-extrabold tracking-tight', className)}>
-      {BRAND.name.toLowerCase()}
-      <span aria-hidden className="mb-1.5 h-2.5 w-2.5 shrink-0 rounded-full border-2 border-ink bg-brand" />
+    <Link href="/" aria-label={BRAND.name} className={cx('inline-flex shrink-0 items-center', className)}>
+      <Image src="/pic/logo.webp" alt={BRAND.name} width={675} height={439} priority
+        className="h-11 w-auto sm:h-12" sizes="200px" />
     </Link>
   );
 }
@@ -93,13 +94,16 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t-3 border-ink bg-ink text-paper">
+      {/* Рисованная полоса-«двор» отделяет подвал от страницы. */}
+      <div className="overflow-hidden border-b-3 border-ink bg-sand">
+        <Image src="/pic/footer.webp" alt="" aria-hidden width={1600} height={800} sizes="100vw"
+          className="h-28 w-full object-cover object-bottom sm:h-44" />
+      </div>
       <div className="mx-auto max-w-[1240px] px-5 py-14 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
           <div>
-            <span className="inline-flex items-end gap-1.5 text-4xl font-extrabold tracking-tight">
-              {BRAND.name.toLowerCase()}
-              <span aria-hidden className="mb-2.5 h-3.5 w-3.5 rounded-full border-2 border-paper bg-brand" />
-            </span>
+            <Image src="/pic/logo.webp" alt={BRAND.name} width={675} height={439}
+              className="h-16 w-auto" sizes="260px" />
             <p className="mt-4 max-w-[34ch] text-[15px] text-paper/70">{BRAND.slogan}</p>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
+import { Reveal } from '@/components/site/motion';
 import { Button, Card, Badge } from '@/components/ui';
 import { COMMISSION_PERCENT } from '@/lib/pricing';
 
@@ -62,7 +63,7 @@ export default function PricingPage() {
 
         <Section>
           <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-            <Card className="p-8">
+            <Card className="toon p-8">
               <Badge tone="sand" className="mb-4">Бесплатно навсегда</Badge>
               <div className="flex items-end gap-2">
                 <span className="text-[clamp(3rem,9vw,5rem)] font-extrabold leading-none tracking-tight">0</span>
@@ -73,7 +74,7 @@ export default function PricingPage() {
               </p>
               <ul className="mt-6 space-y-2.5">
                 {FREE.map((f) => (
-                  <li key={f} className="flex items-start gap-3 text-[15px] font-bold">
+                  <li key={f} className="flex items-start gap-3 text-[15px]">
                     <span aria-hidden className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-ink bg-brand text-[11px] leading-none text-white">✓</span>
                     {f}
                   </li>
@@ -82,7 +83,7 @@ export default function PricingPage() {
             </Card>
 
             <div className="flex flex-col gap-5">
-              <Card className="bg-brand p-8 text-white">
+              <Card className="toon bg-brand p-8 text-white">
                 <Badge tone="neutral" className="mb-4">Платно только это</Badge>
                 <div className="flex items-end gap-2">
                   <span className="text-[clamp(3rem,9vw,5rem)] font-extrabold leading-none tracking-tight">{COMMISSION_PERCENT}</span>
@@ -94,7 +95,7 @@ export default function PricingPage() {
               </Card>
 
               {PAID.map((p) => (
-                <Card key={p.t} className="flex items-start justify-between gap-5 p-6">
+                <Reveal key={p.t}><Card className="toon h-full flex items-start justify-between gap-5 p-6">
                   <div>
                     <h3 className="text-lg font-extrabold tracking-tight">{p.t}</h3>
                     <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{p.d}</p>
@@ -102,7 +103,7 @@ export default function PricingPage() {
                   <span className="shrink-0 rounded-full border-3 border-ink bg-sand px-4 py-1.5 text-base font-extrabold">
                     {p.price}
                   </span>
-                </Card>
+                </Card></Reveal>
               ))}
             </div>
           </div>
@@ -114,7 +115,7 @@ export default function PricingPage() {
           sub={`Комиссия ${COMMISSION_PERCENT}% удерживается из суммы заказа. Ниже — та же арифметика на конкретных цифрах.`}
           className="!pt-0"
         >
-          <Card className="overflow-hidden p-0">
+          <Card className="toon overflow-hidden p-0">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] border-collapse text-left">
                 <thead>
@@ -157,16 +158,16 @@ export default function PricingPage() {
               { t: 'Деньги под защитой', d: 'Комиссия оплачивает работу платёжного контура: резерв средств, возвраты, разбор споров.' },
               { t: 'Нет платных мест в выдаче', d: 'Позиция в выдаче определяется совпадением с задачей. Купить верх списка нельзя.' },
             ].map((x) => (
-              <Card key={x.t} className="p-6">
+              <Reveal key={x.t}><Card className="toon h-full p-6">
                 <h3 className="text-lg font-extrabold tracking-tight">{x.t}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{x.d}</p>
-              </Card>
+              </Card></Reveal>
             ))}
           </div>
         </Section>
 
         <Section className="!pb-24 !pt-0">
-          <Card className="bg-ink p-10 text-center text-paper shadow-pop-lg sm:p-14">
+          <Card className="toon bg-ink p-10 text-center text-paper shadow-pop-lg sm:p-14">
             <h2 className="text-balance text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
               Начать ничего не стоит
             </h2>

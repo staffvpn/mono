@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
+import { Reveal } from '@/components/site/motion';
 import { Button, Card, Badge } from '@/components/ui';
 import { ArtShield, ArtDispute, ArtSupport } from '@/components/ui/art';
 
@@ -77,8 +78,8 @@ export default function SafetyPage() {
 
         <Section className="!pt-0">
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card className="p-8">
-              <ArtShield className="h-20 w-20" />
+            <Card className="toon p-8">
+              <ArtShield className="h-20 w-auto" />
               <h3 className="mt-4 text-2xl font-extrabold tracking-tight">Если вы заказчик</h3>
               <ul className="mt-5 space-y-3">
                 {RULES_CUSTOMER.map((r) => (
@@ -89,8 +90,8 @@ export default function SafetyPage() {
                 ))}
               </ul>
             </Card>
-            <Card className="bg-surface p-8">
-              <ArtSupport className="h-20 w-20" />
+            <Card className="toon bg-surface p-8">
+              <ArtSupport className="h-20 w-auto" />
               <h3 className="mt-4 text-2xl font-extrabold tracking-tight">Если вы исполнитель</h3>
               <ul className="mt-5 space-y-3">
                 {RULES_EXECUTOR.map((r) => (
@@ -112,17 +113,17 @@ export default function SafetyPage() {
         >
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {RED_FLAGS.map((f) => (
-              <Card key={f} className="flex items-start gap-3 p-5">
+              <Reveal key={f}><Card className="toon h-full flex items-start gap-3 p-5">
                 <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full border-3 border-ink bg-danger text-sm font-extrabold text-white">!</span>
-                <p className="text-[15px] font-bold leading-relaxed">{f}</p>
-              </Card>
+                <p className="text-[15px] leading-relaxed">{f}</p>
+              </Card></Reveal>
             ))}
           </div>
         </Section>
 
         <Section className="!pt-0">
-          <Card className="bg-ink p-8 text-paper sm:p-10">
-            <ArtDispute className="h-20 w-20" />
+          <Card className="toon bg-ink p-8 text-paper sm:p-10">
+            <ArtDispute className="h-20 w-auto" />
             <h3 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">Как проходит спор</h3>
             <ol className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
@@ -148,11 +149,11 @@ export default function SafetyPage() {
               { t: 'Мы не заменяем полицию и суд', d: 'При причинении вреда, угрозах или мошенничестве обращайтесь в правоохранительные органы. Материалы заказа мы предоставим по законному запросу.' },
               { t: 'Проверка ≠ гарантия', d: 'Подтверждённые документы означают, что человек тот, за кого себя выдаёт. Это не обещание качества его работы.' },
             ].map((x) => (
-              <Card key={x.t} className="p-6">
+              <Reveal key={x.t}><Card className="toon h-full p-6">
                 <Badge tone="sand" className="mb-3">Важно</Badge>
                 <h3 className="text-lg font-extrabold tracking-tight">{x.t}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{x.d}</p>
-              </Card>
+              </Card></Reveal>
             ))}
           </div>
         </Section>

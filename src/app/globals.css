@@ -47,7 +47,9 @@ html{-webkit-text-size-adjust:100%}
 body{
   background:rgb(var(--c-paper));
   color:rgb(var(--c-ink));
-  font-weight:500;
+  /* Обычный текст — обычным весом. Жирность оставляем заголовкам,
+     кнопкам и цифрам, иначе выделяться перестаёт вообще всё. */
+  font-weight:400;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
@@ -75,3 +77,63 @@ button,a[role="button"]{touch-action:manipulation}
 /* скрываем полосу прокрутки у горизонтальных лент фильтров */
 .no-bar{scrollbar-width:none;-ms-overflow-style:none}
 .no-bar::-webkit-scrollbar{display:none}
+
+/* Keyframes объявляем здесь, а не только в конфиге Tailwind: он выкидывает
+   те, у которых нет соответствующего класса animate-*, и ссылка из своего CSS
+   указывала бы в пустоту — анимация просто не запускалась бы. */
+@keyframes popIn{
+  0%{opacity:0;transform:translateY(24px) scale(.86) rotate(-2deg)}
+  60%{opacity:1;transform:translateY(-6px) scale(1.03) rotate(.6deg)}
+  100%{opacity:1;transform:none}
+}
+@keyframes drift{100%{transform:translateX(-50%)}}
+
+/* ============================================================
+   Мультяшная моторика
+   Появление — через animation, а не transition: transition на тех же
+   элементах занят наведением, и одно затирало бы другое.
+   ============================================================ */
+.reveal{opacity:0}
+.reveal.is-in{animation:popIn .62s cubic-bezier(.34,1.56,.64,1) both}
+.reveal.is-in:nth-child(2){animation-delay:.06s}
+.reveal.is-in:nth-child(3){animation-delay:.12s}
+.reveal.is-in:nth-child(4){animation-delay:.18s}
+.reveal.is-in:nth-child(5){animation-delay:.24s}
+.reveal.is-in:nth-child(6){animation-delay:.3s}
+
+/* Карточка «оживает» под курсором: подпрыгивает и чуть кренится. */
+.toon{
+  transition:translate .22s cubic-bezier(.34,1.56,.64,1),
+             rotate .22s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .22s ease;
+}
+@media (hover:hover){
+  .toon:hover{translate:0 -6px; rotate:-1.2deg}
+  .toon:nth-child(even):hover{rotate:1.2deg}
+}
+
+/* Кнопки: лёгкий подскок вместо статичного цвета. */
+@media (hover:hover){
+  .toon-btn{transition:translate .18s cubic-bezier(.34,1.56,.64,1), scale .18s cubic-bezier(.34,1.56,.64,1)}
+  .toon-btn:hover{translate:0 -2px; scale:1.03}
+}
+
+/* Плавное раскрытие вопроса: 0fr→1fr анимируется, height:auto — нет. */
+.acc-body{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .42s cubic-bezier(.22,.9,.24,1), opacity .3s ease;
+  opacity:0;
+}
+.acc-body>div{overflow:hidden}
+.acc-open .acc-body{grid-template-rows:1fr;opacity:1}
+
+/* Бегущая лента: две одинаковые половины, сдвиг на -50% замыкает цикл. */
+.ticker{display:flex;width:max-content;animation:drift 26s linear infinite}
+.ticker:hover{animation-play-state:paused}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1}
+  .reveal.is-in{animation:none}
+  .ticker{animation:none}
+}

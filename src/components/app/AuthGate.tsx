@@ -60,7 +60,7 @@ export function AuthGate({ onDone }: { onDone: () => void }) {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col items-center px-5 py-10 text-center">
-      <ArtSearching className="h-28 w-28" />
+      <ArtSearching className="h-28 w-auto" />
       <h1 className="mt-4 text-3xl font-extrabold tracking-tight">Ну привет!</h1>
       <p className="mt-2 max-w-[36ch] text-[15px] text-muted">
         Один вход — и задачи, отклики и переписка в одном месте. Без паролей.

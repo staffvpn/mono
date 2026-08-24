@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
+import { Reveal } from '@/components/site/motion';
 import { Button, Card, Badge } from '@/components/ui';
 import { ArtMoney, ArtDispute, ArtDone } from '@/components/ui/art';
 import { COMMISSION_PERCENT } from '@/lib/pricing';
@@ -46,7 +47,7 @@ export default function PaymentsPage() {
           <ol className="grid gap-4 lg:grid-cols-5">
             {FLOW.map((f, i) => (
               <li key={f.t}>
-                <Card className="flex h-full flex-col p-6">
+                <Card className="toon flex h-full flex-col p-6">
                   <span className="mb-3 grid h-10 w-10 place-items-center rounded-full border-3 border-ink bg-brand text-base font-extrabold text-white shadow-pop-sm">
                     {i + 1}
                   </span>
@@ -60,24 +61,24 @@ export default function PaymentsPage() {
 
         <Section className="!pt-0">
           <div className="grid gap-6 lg:grid-cols-3">
-            <Card className="p-8">
-              <ArtMoney className="h-20 w-20" />
+            <Card className="toon p-8">
+              <ArtMoney className="h-20 w-auto" />
               <h3 className="mt-4 text-2xl font-extrabold tracking-tight">Комиссия видна заранее</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-muted">
                 В заказе комиссия показана отдельной строкой до того, как вы нажмёте «Оплатить».
                 Сумма к оплате и сумма к получению написаны рядом — считать в уме не нужно.
               </p>
             </Card>
-            <Card className="p-8">
-              <ArtDone className="h-20 w-20" />
+            <Card className="toon p-8">
+              <ArtDone className="h-20 w-auto" />
               <h3 className="mt-4 text-2xl font-extrabold tracking-tight">Приёмка — это действие</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-muted">
                 Деньги не уходят «сами через три дня» без вашего ведома. Пока заказчик не принял работу,
                 платёж остаётся зарезервированным.
               </p>
             </Card>
-            <Card className="p-8">
-              <ArtDispute className="h-20 w-20" />
+            <Card className="toon p-8">
+              <ArtDispute className="h-20 w-auto" />
               <h3 className="mt-4 text-2xl font-extrabold tracking-tight">Спор замораживает платёж</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-muted">
                 Открытый спор блокирует перевод до решения. Ни одна из сторон не может утащить деньги,
@@ -90,19 +91,19 @@ export default function PaymentsPage() {
         <Section eyebrow="Что если" title="Разбор пяти неприятных ситуаций" className="!pt-0">
           <div className="grid gap-4 md:grid-cols-2">
             {CASES.map((c) => (
-              <Card key={c.t} className="p-6">
+              <Reveal key={c.t}><Card className="toon h-full p-6">
                 <Badge tone={c.tone === 'ok' ? 'sand' : c.tone === 'warn' ? 'brand' : 'neutral'} className="mb-3">
                   {c.tone === 'ok' ? 'Решается штатно' : c.tone === 'warn' ? 'Через спор' : 'Вне защиты'}
                 </Badge>
                 <h3 className="text-lg font-extrabold tracking-tight">{c.t}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{c.d}</p>
-              </Card>
+              </Card></Reveal>
             ))}
           </div>
         </Section>
 
         <Section eyebrow="Без иллюзий" title="Что мы говорим честно" className="!pt-0">
-          <Card className="bg-surface p-8 sm:p-10">
+          <Card className="toon bg-surface p-8 sm:p-10">
             <ul className="grid gap-5 md:grid-cols-2">
               {[
                 ['Платёжный провайдер подключается отдельно', 'Приём платежей выполняет лицензированный провайдер. Пока он не подключён к аккаунту площадки, экраны оплаты работают в демонстрационном режиме и настоящих списаний не происходит.'],
@@ -120,7 +121,7 @@ export default function PaymentsPage() {
         </Section>
 
         <Section className="!pb-24 !pt-0">
-          <Card className="bg-brand p-10 text-center text-white shadow-pop-lg sm:p-14">
+          <Card className="toon bg-brand p-10 text-center text-white shadow-pop-lg sm:p-14">
             <h2 className="text-balance text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
               Оплата после результата
             </h2>

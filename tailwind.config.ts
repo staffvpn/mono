@@ -47,6 +47,32 @@ const config: Config = {
         },
         bob: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
         shimmer: { '100%': { transform: 'translateX(100%)' } },
+
+        /* Мультяшная моторика: приземление с перелётом, покачивание,
+           дрожь и болтание — то, чего не хватало статичной вёрстке. */
+        popIn: {
+          '0%': { opacity: '0', transform: 'translateY(24px) scale(.86) rotate(-2deg)' },
+          '60%': { opacity: '1', transform: 'translateY(-6px) scale(1.03) rotate(.6deg)' },
+          '100%': { opacity: '1', transform: 'none' },
+        },
+        wobble: {
+          '0%,100%': { transform: 'rotate(-2.5deg)' },
+          '50%': { transform: 'rotate(2.5deg)' },
+        },
+        swing: {
+          '0%,100%': { transform: 'rotate(-6deg)' },
+          '50%': { transform: 'rotate(6deg)' },
+        },
+        drift: { '100%': { transform: 'translateX(-50%)' } },
+        twinkle: {
+          '0%,100%': { opacity: '.35', transform: 'scale(.85)' },
+          '50%': { opacity: '1', transform: 'scale(1.15)' },
+        },
+        squish: {
+          '0%,100%': { transform: 'scale(1,1)' },
+          '45%': { transform: 'scale(1.06,.94)' },
+          '70%': { transform: 'scale(.97,1.03)' },
+        },
       },
       animation: {
         pop: 'pop .3s cubic-bezier(.34,1.56,.64,1) both',
@@ -54,6 +80,12 @@ const config: Config = {
         flyIn: 'flyIn .5s cubic-bezier(.34,1.56,.64,1) both',
         bob: 'bob 4s ease-in-out infinite',
         shimmer: 'shimmer 1.4s infinite',
+        popIn: 'popIn .62s cubic-bezier(.34,1.56,.64,1) both',
+        wobble: 'wobble 3.2s ease-in-out infinite',
+        swing: 'swing 2.6s ease-in-out infinite',
+        drift: 'drift 26s linear infinite',
+        twinkle: 'twinkle 2.4s ease-in-out infinite',
+        squish: 'squish .5s cubic-bezier(.34,1.56,.64,1)',
       },
     },
   },

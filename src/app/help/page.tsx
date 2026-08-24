@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader, SiteFooter, Section, PageHero } from '@/components/site/Chrome';
+import { Reveal } from '@/components/site/motion';
 import { Button, Card } from '@/components/ui';
 import { BRAND } from '@/lib/brand';
 import { COMMISSION_PERCENT } from '@/lib/pricing';
@@ -84,13 +85,13 @@ export default function HelpPage() {
         <Section eyebrow="Проблема с заказом" title="Четыре шага">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
-              <Card key={s.t} className="p-6">
+              <Reveal key={s.t}><Card className="toon h-full p-6">
                 <span className="mb-3 grid h-10 w-10 place-items-center rounded-full border-3 border-ink bg-brand text-base font-extrabold text-white shadow-pop-sm">
                   {i + 1}
                 </span>
                 <h3 className="text-[17px] font-extrabold leading-tight tracking-tight">{s.t}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.d}</p>
-              </Card>
+              </Card></Reveal>
             ))}
           </div>
         </Section>
@@ -112,7 +113,7 @@ export default function HelpPage() {
         ))}
 
         <Section className="!pb-24 !pt-0">
-          <Card className="bg-surface p-8 sm:p-10">
+          <Card className="toon bg-surface p-8 sm:p-10">
             <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Не нашли ответ?</h2>
             <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-muted">
               Напишите в поддержку из приложения — обращение сразу привяжется к вашему аккаунту и заказу,

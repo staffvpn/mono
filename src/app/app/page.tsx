@@ -90,7 +90,7 @@ export default function AppHome() {
 
       {isExecutor && !me.executor && (
         <Card className="flex flex-col items-start gap-4 bg-surface p-6 sm:flex-row sm:items-center">
-          <ArtSearching className="h-20 w-20 shrink-0" />
+          <ArtSearching className="h-20 w-auto shrink-0" />
           <div className="flex-1">
             <h3 className="text-lg font-extrabold">Заполните профиль исполнителя</h3>
             <p className="mt-1 text-[15px] text-muted">

@@ -131,7 +131,7 @@ export default function CreateTaskPage() {
 
           {(!parsed || raw.trim().length <= 8) && (
             <div className="mt-6 flex items-center gap-4 rounded-lg border-2 border-dashed border-ink/40 p-5">
-              <ArtSearching className="h-16 w-16 shrink-0" />
+              <ArtSearching className="h-16 w-auto shrink-0" />
               <p className="text-sm text-muted">
                 Пара предложений — и мы предложим категорию, дату и время. Ничего не отправится, пока вы не подтвердите.
               </p>

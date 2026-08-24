@@ -155,7 +155,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 
         {order.status === 'awaiting_payment' && isCustomer && (
           <Card className="flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center">
-            <ArtMoney className="h-20 w-20 shrink-0" />
+            <ArtMoney className="h-20 w-auto shrink-0" />
             <div className="flex-1">
               <h3 className="text-lg font-extrabold">Оплата</h3>
               <p className="mt-1 text-[15px] text-muted">
@@ -173,7 +173,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 
         {order.status === 'in_progress' && (
           <Card className="flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center">
-            <ArtDone className="h-20 w-20 shrink-0" />
+            <ArtDone className="h-20 w-auto shrink-0" />
             <div className="flex-1">
               <h3 className="text-lg font-extrabold">{isCustomer ? 'Работа выполнена?' : 'Работа в процессе'}</h3>
               <p className="mt-1 text-[15px] text-muted">
@@ -204,7 +204,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 
         {order.status === 'disputed' && (
           <Card className="flex items-center gap-4 border-danger p-6">
-            <ArtDispute className="h-20 w-20 shrink-0" />
+            <ArtDispute className="h-20 w-auto shrink-0" />
             <div>
               <h3 className="text-lg font-extrabold">Открыт спор</h3>
               <p className="mt-1 text-[15px] text-muted">

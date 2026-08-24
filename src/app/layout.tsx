@@ -13,9 +13,6 @@ export const metadata: Metadata = {
     type: 'website', locale: 'ru_RU',
   },
   robots: { index: true, follow: true },
-  icons: {
-    icon: 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2728%27 height=%2728%27 rx=%279%27 fill=%27%23F25D19%27 stroke=%27%230E0E18%27 stroke-width=%273%27/%3E%3Cpath d=%27M10 16.5l4 4L22 12%27 stroke=%27%230E0E18%27 stroke-width=%273.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 fill=%27none%27/%3E%3C/svg%3E',
-  },
 };
 
 export const viewport: Viewport = {
