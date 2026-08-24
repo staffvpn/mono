@@ -94,10 +94,11 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t-3 border-ink bg-ink text-paper">
-      {/* Рисованная полоса-«двор» отделяет подвал от страницы. */}
-      <div className="overflow-hidden border-b-3 border-ink bg-sand">
+      {/* Рисованный «двор» отделяет подвал от страницы. Показываем картинку
+          целиком: при object-cover на узком экране от неё оставался лоскут. */}
+      <div className="border-b-3 border-ink bg-sand">
         <Image src="/pic/footer.webp" alt="" aria-hidden width={1600} height={800} sizes="100vw"
-          className="h-28 w-full object-cover object-bottom sm:h-44" />
+          className="block h-auto w-full" />
       </div>
       <div className="mx-auto max-w-[1240px] px-5 py-14 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
