@@ -16,6 +16,7 @@ const TOP = [
   { href: '/app/tasks', label: 'Задачи' },
   { href: '/app/messages', label: 'Сообщения' },
   { href: '/app/orders', label: 'Мои заказы' },
+  { href: '/app/wallet', label: 'Кошелёк' },
   { href: '/app/favorites', label: 'Избранное' },
 ];
 

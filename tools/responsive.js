@@ -9,7 +9,7 @@ const PAGES = [
   '/', '/how-it-works', '/safety', '/payments', '/pricing', '/tasks', '/help',
   '/legal/terms', '/legal/privacy', '/legal/rules',
   '/app', '/app/tasks', '/app/create', '/app/executors', '/app/orders',
-  '/app/messages', '/app/notifications', '/app/favorites', '/app/profile', '/app/help',
+  '/app/messages', '/app/notifications', '/app/favorites', '/app/profile', '/app/help', '/app/wallet',
   '/admin', '/admin/users', '/admin/tasks', '/admin/applications', '/admin/orders',
   '/admin/payments', '/admin/moderation', '/admin/reports', '/admin/disputes',
   '/admin/support', '/admin/verification', '/admin/risk', '/admin/categories',

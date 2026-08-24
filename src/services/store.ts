@@ -3,7 +3,7 @@
 import * as seed from '@/mock/data';
 import type {
   Application, AppNotification, Category, Dispute, Favorite, Message, Order,
-  Payment, Report, Review, SupportTicket, Task, Thread, User, ID,
+  Payment, Report, Review, SupportTicket, Task, Thread, User, ID, Payout,
 } from '@/types';
 
 /* ============================================================
@@ -13,7 +13,7 @@ import type {
    переключается на HTTP, а этот файл удаляется целиком.
    ============================================================ */
 
-const KEY = 'teydo.mock.v1';
+const KEY = 'teydo.mock.v2';
 
 export interface DB {
   users: User[];
@@ -27,6 +27,7 @@ export interface DB {
   favorites: Favorite[];
   notifications: AppNotification[];
   payments: Payment[];
+  payouts: Payout[];
   disputes: Dispute[];
   reports: Report[];
   support: SupportTicket[];
@@ -47,6 +48,7 @@ function fresh(): DB {
     favorites: [],
     notifications: structuredClone(seed.notifications),
     payments: structuredClone(seed.payments),
+    payouts: [],
     disputes: structuredClone(seed.disputes),
     reports: structuredClone(seed.reports),
     support: structuredClone(seed.supportTickets),

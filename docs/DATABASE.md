@@ -114,7 +114,6 @@
 | budget_amount | int | копейки; null при договорной цене |
 | budget_min, budget_max | int | ориентир, если сумма не указана |
 | budget_unknown | bool | |
-| pay_method | text | |
 | extra_terms | text | |
 | relevance | text | `active` / `comparing` / `needs_confirm` / `inactive` / `done` |
 | moderation | text | `draft` / `published` / `hidden` / `rejected` |
@@ -183,12 +182,42 @@
 | provider_payment_id | text | идентификатор на стороне провайдера |
 | amount | int | копейки |
 | commission | int | копейки |
+| method | text | `card` / `sbp` / `telegram` — способов «наличными» и «переводом на карту» нет |
 | status | text | `pending` / `held` / `released` / `refunded` / `failed` |
-| created_at, updated_at | timestamptz | |
+| created_at, updated_at, released_at | timestamptz | |
 
 **Статус меняется только по подтверждению провайдера.** Запрос клиента
 «платёж прошёл» не является основанием. Уникальность `(provider, provider_payment_id)`
 защищает от повторной обработки вебхука.
+
+## payouts
+
+Вывод заработка исполнителю. Баланс отдельным числом **не хранится** — он
+считается из `payments` и `payouts`. Хранимое число рано или поздно разъезжается
+с историей операций, и восстановить, откуда взялась разница, уже нельзя.
+
+| Поле | Тип | Примечание |
+|---|---|---|
+| id | uuid pk | |
+| user_id | uuid fk → users | |
+| amount | int | копейки |
+| destination | text | `card` / `sbp` |
+| provider_token | text | идентификатор реквизитов у провайдера; номер карты площадка не хранит |
+| masked | text | последние четыре цифры — только для показа |
+| status | text | `requested` / `processing` / `paid` / `rejected` |
+| reason | text | причина отказа |
+| created_at, processed_at | timestamptz | |
+
+Доступный остаток считает сервер перед созданием выплаты. Сумма из запроса —
+пожелание, а не основание.
+
+## webhook_events
+
+Провайдеры повторяют доставку, пока не получат 200. Обработать событие дважды
+означает дважды перевести деньги.
+
+`webhook_events(provider, event_id, received_at, payload jsonb)` с
+**уникальным индексом по (provider, event_id)** — повтор отсекается вставкой.
 
 ## threads / messages
 

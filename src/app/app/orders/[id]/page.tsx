@@ -7,6 +7,8 @@ import { orderService, paymentService } from '@/services/catalog';
 import { chatService, disputeService, notificationService, reviewService } from '@/services/comms';
 import { useDB, useMounted } from '@/hooks/useStore';
 import { CONFIG } from '@/lib/config';
+import { PaySheet } from '@/components/app/PaySheet';
+import type { PaymentMethod } from '@/types';
 import { haptic } from '@/lib/telegram';
 import {
   Avatar, Badge, Button, Card, EmptyState, Field, Modal, Select, Skeleton, StarPicker, Textarea,
@@ -21,6 +23,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
   const mounted = useMounted();
   const db = useDB();
   const [busy, setBusy] = useState(false);
+  const [payOpen, setPayOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
   const [disputeOpen, setDisputeOpen] = useState(false);
   const [scores, setScores] = useState<Record<string, number>>({});
@@ -52,10 +55,10 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     haptic('success');
   }
 
-  async function pay() {
+  async function pay(method: PaymentMethod) {
     setBusy(true);
     try {
-      await paymentService.createPayment(order!.id, order!.terms.price);
+      await paymentService.createPayment(order!.id, order!.terms.price, method);
       orderService.update(order!.id, { status: 'in_progress' });
       const th = chatService.findOrCreate(order!.taskId, order!.customerId, order!.executorId);
       chatService.system(th.id, 'Оплата получена, деньги зарезервированы. Можно приступать.');
@@ -64,6 +67,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
         body: 'Заказчик оплатил. Можно приступать к работе.', href: `/app/orders/${order!.id}`,
       });
       haptic('success');
+      setPayOpen(false);
     } finally { setBusy(false); }
   }
 
@@ -159,15 +163,11 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
             <div className="flex-1">
               <h3 className="text-lg font-extrabold">Оплата</h3>
               <p className="mt-1 text-[15px] text-muted">
-                Деньги резервируются на защищённом счёте и уходят исполнителю только после того, как вы примете работу.
+                Деньги резервируются на счёте площадки и уходят исполнителю только после того,
+                как вы примете работу.
               </p>
-              {CONFIG.useMock && (
-                <p className="mt-3 rounded-md border-2 border-warn bg-warn/10 px-3 py-2 text-sm font-bold text-warn">
-                  Демо-режим: платёжный провайдер не подключён. Кнопка меняет статус заказа, списания не происходит.
-                </p>
-              )}
             </div>
-            <Button onClick={pay} loading={busy}>Оплатить {money(order.terms.price)}</Button>
+            <Button onClick={() => setPayOpen(true)}>Оплатить {money(order.terms.price)}</Button>
           </Card>
         )}
 
@@ -300,6 +300,15 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
           </Button>
         </div>
       </Modal>
+
+      <PaySheet
+        open={payOpen}
+        onClose={() => setPayOpen(false)}
+        amount={order.terms.price}
+        commissionPercent={order.commissionPercent}
+        busy={busy}
+        onPay={pay}
+      />
     </div>
   );
 }

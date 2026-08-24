@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { authService } from '@/services/auth';
 import { matchingService, taskService } from '@/services/catalog';
 import { useDB, useMounted } from '@/hooks/useStore';
-import { Button, Card, Chip, EmptyState, Select, Skeleton, Tabs } from '@/components/ui';
+import { Button, Card, Chip, EmptyState, Select, Skeleton, Tabs, cx } from '@/components/ui';
+import { ScrollRow } from '@/components/app/ScrollRow';
 import { ArtEmpty } from '@/components/ui/art';
 import { TaskCard } from '@/components/app/cards';
 
@@ -61,26 +62,44 @@ export default function TasksPage() {
       <Tabs value={tab} onChange={setTab}
         tabs={[{ key: 'all', label: 'Все задачи' }, { key: 'mine', label: 'Мои задачи' }]} />
 
-      <Card className="flex flex-col gap-4 p-4">
-        <div className="no-bar flex gap-2 overflow-x-auto">
+      <Card className="flex flex-col gap-3 p-3 sm:p-4">
+        <ScrollRow label="Категории">
           <Chip active={!cat} onClick={() => setCat('')}>Все</Chip>
           {db.categories.filter((c) => !c.parentId && c.enabled).map((c) => (
             <Chip key={c.id} active={cat === c.id} onClick={() => setCat(c.id)}>
-              <span aria-hidden>{c.emoji}</span>{c.name}
+              <span aria-hidden className="text-[15px] leading-none">{c.emoji}</span>
+              {c.name}
             </Chip>
           ))}
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="no-bar flex gap-2 overflow-x-auto">
+        </ScrollRow>
+
+        <div className="flex flex-col gap-3 border-t-2 border-ink/10 pt-3 sm:flex-row sm:items-center">
+          {/* Расстояние — переключатель, а не россыпь кнопок: значения
+              взаимоисключающие и их всего шесть. */}
+          <div className="no-bar flex shrink-0 gap-1 overflow-x-auto rounded-full border-2 border-ink bg-surface p-1">
             {DISTANCES.map((d) => (
-              <Chip key={d} active={dist === d} onClick={() => setDist(d)}>
+              <button
+                key={d}
+                type="button"
+                aria-pressed={dist === d}
+                onClick={() => setDist(d)}
+                className={cx(
+                  'min-h-[30px] shrink-0 rounded-full px-3 text-[13px] font-bold leading-none transition-colors',
+                  dist === d ? 'bg-brand text-white' : 'text-muted hover:text-ink',
+                )}
+              >
                 {d === 0 ? 'Весь город' : `${d} км`}
-              </Chip>
+              </button>
             ))}
           </div>
-          <Select value={sort} onChange={(e) => setSort(e.target.value)} className="ml-auto max-w-[220px]" aria-label="Сортировка">
-            {SORTS.map((s) => <option key={s.v} value={s.v}>{s.l}</option>)}
-          </Select>
+
+          <label className="flex min-w-0 items-center gap-2 sm:ml-auto">
+            <span className="shrink-0 text-[13px] font-bold text-muted">Сортировка</span>
+            <Select value={sort} onChange={(e) => setSort(e.target.value)}
+              className="!min-h-[38px] !w-auto !border-2 !py-1.5 text-[13px]" aria-label="Сортировка">
+              {SORTS.map((s) => <option key={s.v} value={s.v}>{s.l}</option>)}
+            </Select>
+          </label>
         </div>
       </Card>
 

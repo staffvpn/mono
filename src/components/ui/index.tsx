@@ -166,7 +166,7 @@ export function Chip({ active, children, className, ...rest }: React.ButtonHTMLA
       {...rest}
       aria-pressed={active}
       className={cx(
-        'inline-flex min-h-[40px] items-center gap-2 rounded-full border-2 px-4 text-sm font-bold transition-colors',
+        'inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border-2 px-3.5 text-[13px] font-bold leading-none transition-colors',
         active ? 'border-ink bg-brand text-white shadow-pop-sm' : 'border-ink bg-card text-ink hover:bg-sand',
         className,
       )}

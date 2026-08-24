@@ -3,7 +3,7 @@
 import { commit, getDB, nowISO, uid } from './store';
 import { COMMISSION_PERCENT } from '@/lib/pricing';
 import type {
-  Application, Favorite, ID, MatchScore, Order, OrderTerms, Payment, Task, User,
+  Application, Favorite, ID, MatchScore, Order, OrderTerms, Payment, PaymentMethod, Task, User,
 } from '@/types';
 
 /* ============================================================
@@ -18,7 +18,6 @@ export interface TaskDraft {
   date: string | null; timeWindow?: string;
   urgency: Task['urgency'];
   budget: number | null; budgetUnknown: boolean;
-  payMethod: Task['payMethod'];
   photos: string[]; extraTerms?: string;
 }
 
@@ -53,7 +52,6 @@ export const taskService = {
       budget: draft.budgetUnknown
         ? { amount: null, min: 1500, max: 6000, unknown: true, negotiable: true }
         : { amount: draft.budget, unknown: false, negotiable: true },
-      payMethod: draft.payMethod,
       extraTerms: draft.extraTerms,
       relevance: 'active',
       moderation: 'published',
@@ -234,21 +232,21 @@ export const orderService = {
    PaymentService — абстракция. Реальный провайдер подключается на backend;
    фронт никогда не меняет статус платежа сам. */
 export interface PaymentProvider {
-  createPayment(orderId: ID, amount: number): Promise<Payment>;
+  createPayment(orderId: ID, amount: number, method: PaymentMethod): Promise<Payment>;
   getPaymentStatus(paymentId: ID): Promise<Payment | undefined>;
   releasePayment(paymentId: ID): Promise<Payment | undefined>;
   refundPayment(paymentId: ID, reason: string): Promise<Payment | undefined>;
 }
 
 export const mockPaymentProvider: PaymentProvider = {
-  async createPayment(orderId, amount) {
+  async createPayment(orderId, amount, method) {
     await new Promise((r) => setTimeout(r, 700));
     const db = getDB();
     const order = db.orders.find((o) => o.id === orderId)!;
     const payment: Payment = {
       id: uid('pay'), orderId, payerId: order.customerId, payeeId: order.executorId,
       amount, commission: Math.round((amount * order.commissionPercent) / 100),
-      currency: 'RUB', provider: 'mock', status: 'held', createdAt: nowISO(),
+      currency: 'RUB', provider: 'mock', method, status: 'held', createdAt: nowISO(),
     };
     db.payments.unshift(payment);
     db.orders = db.orders.map((o) => (o.id === orderId ? { ...o, status: 'paid', paymentId: payment.id } : o));
@@ -261,7 +259,7 @@ export const mockPaymentProvider: PaymentProvider = {
   async releasePayment(id) {
     await new Promise((r) => setTimeout(r, 500));
     const db = getDB();
-    db.payments = db.payments.map((p) => (p.id === id ? { ...p, status: 'released' } : p));
+    db.payments = db.payments.map((p) => (p.id === id ? { ...p, status: 'released', releasedAt: nowISO() } : p));
     commit();
     return db.payments.find((p) => p.id === id);
   },

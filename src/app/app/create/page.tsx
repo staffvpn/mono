@@ -9,7 +9,7 @@ import { useDB, useMounted } from '@/hooks/useStore';
 import { parseTask, priceHint } from '@/lib/parseTask';
 import { haptic } from '@/lib/telegram';
 import { Badge, Button, Card, Chip, Field, Input, Select, Skeleton, Textarea, Toggle } from '@/components/ui';
-import { ArtSearching, ArtDone } from '@/components/ui/art';
+import { ArtSearching, ArtDone, ArtMoney } from '@/components/ui/art';
 import { money } from '@/components/app/cards';
 import type { Urgency } from '@/types';
 
@@ -31,7 +31,6 @@ export default function CreateTaskPage() {
   const [urgency, setUrgency] = useState<Urgency>('flexible');
   const [budget, setBudget] = useState('');
   const [unknownPrice, setUnknownPrice] = useState(false);
-  const [payMethod, setPayMethod] = useState<'card' | 'cash' | 'sbp' | 'any'>('any');
   const [extra, setExtra] = useState('');
   const [err, setErr] = useState('');
   const [createdId, setCreatedId] = useState('');
@@ -69,7 +68,7 @@ export default function CreateTaskPage() {
       date: date ? new Date(date).toISOString() : null,
       timeWindow: timeWindow || undefined, urgency,
       budget: unknownPrice ? null : Number(budget.replace(/\s/g, '')),
-      budgetUnknown: unknownPrice, payMethod, photos: [], extraTerms: extra || undefined,
+      budgetUnknown: unknownPrice, photos: [], extraTerms: extra || undefined,
     }, me!.id);
 
     notificationService.push(me!.id, {
@@ -194,13 +193,16 @@ export default function CreateTaskPage() {
             </div>
           </Field>
 
-          <Field label="Способ оплаты">
-            <div className="flex flex-wrap gap-2">
-              {([['any', 'Любой'], ['card', 'Картой'], ['sbp', 'СБП'], ['cash', 'Наличными']] as const).map(([v, l]) => (
-                <Chip key={v} active={payMethod === v} onClick={() => setPayMethod(v)}>{l}</Chip>
-              ))}
-            </div>
-          </Field>
+          {/* Способ оплаты не выбирают на этапе задачи: платёж всегда идёт
+              через площадку, иначе не работают ни резерв, ни спор. */}
+          <div className="flex items-start gap-3 rounded-md border-2 border-ink bg-surface px-4 py-3">
+            <ArtMoney className="h-10 w-auto shrink-0" />
+            <p className="text-[14px] leading-relaxed text-muted">
+              <b className="text-ink">Оплата проходит через TEYDO.</b> Деньги спишутся только после
+              того, как вы выберете исполнителя и обе стороны подтвердят условия, и будут
+              зарезервированы до приёмки работы.
+            </p>
+          </div>
 
           <Field label="Дополнительные условия" hint="Например: нужен свой инструмент, есть лифт, дома кот">
             <Input value={extra} onChange={(e) => setExtra(e.target.value)} />

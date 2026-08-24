@@ -94,12 +94,6 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t-3 border-ink bg-ink text-paper">
-      {/* Рисованный «двор» отделяет подвал от страницы. Показываем картинку
-          целиком: при object-cover на узком экране от неё оставался лоскут. */}
-      <div className="border-b-3 border-ink bg-sand">
-        <Image src="/pic/footer.webp" alt="" aria-hidden width={1600} height={800} sizes="100vw"
-          className="block h-auto w-full" />
-      </div>
       <div className="mx-auto max-w-[1240px] px-5 py-14 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
           <div>
@@ -135,14 +129,14 @@ export function Section({ id, eyebrow, title, sub, children, className }: {
   return (
     <section id={id} className={cx('mx-auto w-full max-w-[1240px] px-5 py-16 sm:px-8 sm:py-24', className)}>
       {(eyebrow || title) && (
-        <header className="mb-10 max-w-[46ch]">
+        <header className="mb-10">
           {eyebrow && (
             <span className="mb-4 inline-block -rotate-2 rounded-full border-2 border-ink bg-brand px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-pop-sm">
               {eyebrow}
             </span>
           )}
-          {title && <h2 className="text-balance text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">{title}</h2>}
-          {sub && <p className="mt-4 text-[17px] leading-relaxed text-muted">{sub}</p>}
+          {title && <h2 className="max-w-[20ch] text-balance text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">{title}</h2>}
+          {sub && <p className="mt-4 max-w-[68ch] text-pretty text-[17px] leading-relaxed text-muted">{sub}</p>}
         </header>
       )}
       {children}

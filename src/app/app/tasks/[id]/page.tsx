@@ -117,7 +117,7 @@ export default function TaskPage({ params }: { params: Promise<{ id: string }> }
 
         <Card className="grid gap-4 p-6 sm:grid-cols-2">
           <Info label="Бюджет" value={budgetLabel(task)} big />
-          <Info label="Оплата" value={{ card: 'Картой', cash: 'Наличными', sbp: 'СБП', invoice: 'Безнал', any: 'Любой способ' }[task.payMethod]} />
+          <Info label="Оплата" value="Через TEYDO, деньги в резерве до приёмки" />
           <Info label="Где" value={`${task.geo.address}${task.geo.district ? `, ${task.geo.district}` : ''}`} />
           <Info label="Когда" value={task.date ? new Date(task.date).toLocaleDateString('ru-RU') + (task.timeWindow ? `, ${task.timeWindow}` : '') : (task.timeWindow || 'По договорённости')} />
         </Card>

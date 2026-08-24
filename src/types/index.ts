@@ -114,7 +114,12 @@ export type TaskRelevance =
 
 export type TaskModeration = 'published' | 'on_review' | 'hidden' | 'archived';
 export type Urgency = 'now' | 'today' | 'this_week' | 'flexible';
-export type PayMethod = 'card' | 'cash' | 'sbp' | 'invoice' | 'any';
+/**
+ * Способ оплаты внутри площадки. Наличных и «переведу на карту» здесь нет
+ * намеренно: вне платформы не работают ни резерв средств, ни разбор спора,
+ * ни комиссия. Всё проходит через платёжный контур TEYDO.
+ */
+export type PaymentMethod = 'card' | 'sbp' | 'telegram';
 
 export interface TaskBudget {
   /** null + unknown:true — «не знаю цену», показываем ориентир */
@@ -148,7 +153,6 @@ export interface Task {
   timeWindow?: string;
   urgency: Urgency;
   budget: TaskBudget;
-  payMethod: PayMethod;
   extraTerms?: string;
   relevance: TaskRelevance;
   moderation: TaskModeration;
@@ -310,13 +314,54 @@ export interface Payment {
   orderId: ID;
   payerId: ID;
   payeeId: ID;
+  /** Сумма заказа. Исполнителю уходит amount − commission. */
   amount: number;
   commission: number;
   currency: 'RUB';
   provider: string;
+  method: PaymentMethod;
   status: PaymentStatus;
   createdAt: ISODate;
+  releasedAt?: ISODate;
   error?: string;
+}
+
+/* ---------- Кошелёк ---------- */
+
+export type PayoutStatus = 'requested' | 'processing' | 'paid' | 'rejected';
+
+export interface Payout {
+  id: ID;
+  userId: ID;
+  amount: number;
+  /** Куда выводим. Реквизиты хранит платёжный провайдер, не площадка. */
+  destination: 'card' | 'sbp';
+  masked: string;
+  status: PayoutStatus;
+  createdAt: ISODate;
+  processedAt?: ISODate;
+  reason?: string;
+}
+
+/** Строка истории кошелька. Считается из платежей и выплат, не хранится отдельно. */
+export interface WalletEntry {
+  id: ID;
+  at: ISODate;
+  kind: 'hold' | 'earned' | 'spent' | 'refund' | 'payout' | 'commission';
+  amount: number;
+  title: string;
+  orderId?: ID;
+}
+
+export interface WalletBalance {
+  /** Можно вывести прямо сейчас. */
+  available: number;
+  /** Зарезервировано по активным заказам — придёт после приёмки. */
+  pending: number;
+  /** Всего заработано за всё время. */
+  earnedTotal: number;
+  /** Всего потрачено за всё время (для заказчика). */
+  spentTotal: number;
 }
 
 export type DisputeStatus = 'open' | 'in_review' | 'need_info' | 'resolved' | 'closed';

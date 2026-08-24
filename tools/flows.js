@@ -58,18 +58,28 @@ const bad = (n, e) => log.push('✗ ' + n + (e ? ' — ' + e : ''));
 
     /* 8. Оплата: подтверждаем за исполнителя через хранилище */
     await p.evaluate(() => {
-      const raw = JSON.parse(localStorage.getItem('teydo.mock.v1'));
+      const raw = JSON.parse(localStorage.getItem('teydo.mock.v2'));
       const o = raw.orders[0];
       o.changes[o.changes.length - 1].acceptedByExecutor = true;
       o.status = 'awaiting_payment';
-      localStorage.setItem('teydo.mock.v1', JSON.stringify(raw));
+      localStorage.setItem('teydo.mock.v2', JSON.stringify(raw));
     });
     await p.reload({ waitUntil: 'domcontentloaded' });
     await p.waitForTimeout(600);
-    await p.getByRole('button', { name: /Оплатить/ }).click();
+    await p.getByRole('button', { name: /^Оплатить/ }).first().click();
+    await p.waitForTimeout(500);
+    await p.getByRole('dialog').getByRole('button', { name: /^Оплатить/ }).click();
     await p.waitForTimeout(1400);
     const paid = await p.getByText('Работа выполнена?').isVisible().catch(() => false);
     paid ? ok('8. Оплата → деньги зарезервированы') : bad('8. Оплата');
+
+    /* 8b. Кошелёк исполнителя видит резерв */
+    await go(p, '/app/wallet');
+    await p.waitForTimeout(700);
+    const hasWallet = await p.getByText('Доступно к выводу').isVisible().catch(() => false);
+    hasWallet ? ok('8b. Кошелёк открывается и считает баланс') : bad('8b. Кошелёк');
+    await p.goBack();
+    await p.waitForTimeout(700);
 
     /* 9. Приёмка и оценка */
     await p.getByRole('button', { name: 'Принять работу' }).click();

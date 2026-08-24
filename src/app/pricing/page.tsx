@@ -112,7 +112,7 @@ export default function PricingPage() {
         <Section
           eyebrow="Считаем вслух"
           title="Сколько останется исполнителю"
-          sub={`Комиссия ${COMMISSION_PERCENT}% удерживается из суммы заказа. Ниже — та же арифметика на конкретных цифрах.`}
+          sub={`Комиссия ${COMMISSION_PERCENT}% удерживается из суммы заказа.`}
           className="!pt-0"
         >
           <Card className="toon overflow-hidden p-0">
